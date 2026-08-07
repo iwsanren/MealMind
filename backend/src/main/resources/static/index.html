@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealMind MVP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 720px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #222;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: 700;
+        }
+
+        input,
+        textarea,
+        button {
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 6px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            margin-top: 20px;
+            padding: 16px;
+            background: #f4f4f4;
+            min-height: 160px;
+        }
+    </style>
+</head>
+<body>
+<h1>MealMind MVP</h1>
+
+<label for="mealTime">Meal Time</label>
+<input id="mealTime" placeholder="Lunch / Dinner / Breakfast">
+
+<label for="goal">Goal</label>
+<input id="goal" placeholder="High protein, light, cheap, quick...">
+
+<label for="preferences">Preferences</label>
+<textarea id="preferences" rows="4" placeholder="I like spicy food, no beef, want something warm..."></textarea>
+
+<label for="budget">Budget</label>
+<input id="budget" placeholder="Around 15 dollars">
+
+<button onclick="submitForm()">Generate Meal Plan</button>
+
+<pre id="result">Meal plan will appear here.</pre>
+
+<script>
+    async function submitForm() {
+        const result = document.getElementById("result");
+        result.textContent = "Generating meal plan...";
+
+        const payload = {
+            mealTime: document.getElementById("mealTime").value,
+            goal: document.getElementById("goal").value,
+            preferences: document.getElementById("preferences").value,
+            budget: document.getElementById("budget").value
+        };
+
+        const response = await fetch("/api/meal-plan", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        result.textContent =
+            "Session ID: " + data.sessionId + "\n" +
+            "Trace ID: " + data.traceId + "\n\n" +
+            data.speechText;
+    }
+</script>
+</body>
+</html>

@@ -1,1 +1,11 @@
-/.idea
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# IntelliJ IDEA
+.idea/
+
+# Environment variables
+**/.env
