@@ -1,118 +1,172 @@
 package com.mealmind;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @SpringBootApplication
 @RestController
 public class MealMindApplication {
 
-    private final RestClient openAiClient; // call OpenAI
-    private final String model; // AI model
-    private final List<Map<String, Object>> memory = new ArrayList<>(); // memory store
-
-    public MealMindApplication(
-            @Value("${openai.api-key}") String apiKey,
-            @Value("${openai.model}") String model
-    ) {
-        this.model = model;
-        // Store the model name for later LLM calls.
-        this.openAiClient = RestClient.builder()
-                .baseUrl("https://api.openai.com/v1")
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json")
-                .build();
-    }
+    private final List<Meal> personalMeals = new ArrayList<>();
+    private long nextMealId = 1;
 
     public static void main(String[] args) {
         SpringApplication.run(MealMindApplication.class, args);
     }
 
-    @PostMapping("/api/meal-plan")
-    public MealPlanResponse generateMealPlan(@RequestBody MealPlanRequest request) {
-        String sessionId = "sess_" + UUID.randomUUID();
-        String traceId = "trace_" + UUID.randomUUID();
+    @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
+    public String page() {
+        return """
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>MealMind</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            max-width: 680px;
+                            margin: 40px auto;
+                            padding: 0 20px;
+                        }
 
-        // The prompt tells the model what meal plan to generate.
-        String prompt = """
-                Create one simple meal plan for this user.
+                        label {
+                            display: block;
+                            margin-top: 16px;
+                        }
 
-                Meal time: %s
-                Goal: %s
-                Preferences: %s
-                Budget: %s
+                        input, button {
+                            box-sizing: border-box;
+                            width: 100%;
+                            padding: 10px;
+                            margin-top: 6px;
+                            font-size: 16px;
+                        }
 
-                Return:
-                1. Recommended meal
-                2. Short reason
-                3. Simple note for the user
-                """.formatted(
-                request.mealTime(),
-                request.goal(),
-                request.preferences(),
-                request.budget()
-        );
+                        button {
+                            margin-top: 20px;
+                            cursor: pointer;
+                        }
 
-        // request body to OpenAI
-        Map<String, Object> requestBody = Map.of(
-                "model", model,
-                "messages", List.of(
-                        Map.of("role", "developer", "content", "You are a practical meal planning assistant."),
-                        Map.of("role", "user", "content", prompt)
-                )
-        );
+                        li {
+                            margin: 10px 0;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>My Meals</h1>
 
-        Map responseBody = openAiClient.post()
-                .uri("/chat/completions")
-                .body(requestBody)
-                .retrieve()
-                .body(Map.class);
+                    <form id="meal-form">
+                        <label>
+                            Meal Name
+                            <input id="name" placeholder="e.g. Chicken Salad">
+                        </label>
 
-        List choices = (List) responseBody.get("choices");
-        Map firstChoice = (Map) choices.get(0);
-        Map message = (Map) firstChoice.get("message");
-        String speechText = (String) message.get("content");
+                        <label>
+                            Price
+                            <input id="price" type="number" placeholder="e.g. 22">
+                        </label>
 
-        Map<String, Object> savedItem = new LinkedHashMap<>();
-        savedItem.put("sessionId", sessionId);
-        savedItem.put("traceId", traceId);
-        savedItem.put("request", request);
-        savedItem.put("speechText", speechText);
-        memory.add(savedItem);
+                        <label>
+                            Tags
+                            <input id="tags" placeholder="e.g. Lunch, Light, High Protein">
+                        </label>
 
-        return new MealPlanResponse(sessionId, traceId, speechText);
+                        <button type="submit">Add Meal</button>
+                    </form>
+
+                    <h2>Current Meals</h2>
+                    <ul id="meal-list"></ul>
+
+                    <script>
+                        async function loadMeals() {
+                            const response = await fetch("/api/v1/meals");
+                            const meals = await response.json();
+                            const list = document.getElementById("meal-list");
+
+                            list.innerHTML = "";
+
+                            meals.forEach((meal) => {
+                                const item = document.createElement("li");
+                                item.textContent =
+                                    "#" + meal.id +
+                                    " " + meal.name +
+                                    " | $" + meal.price +
+                                    " | " + (meal.tags || []).join(", ");
+                                list.appendChild(item);
+                            });
+                        }
+
+                        document.getElementById("meal-form").addEventListener("submit", async (event) => {
+                            event.preventDefault();
+
+                            const payload = {
+                                name: document.getElementById("name").value,
+                                price: Number(document.getElementById("price").value),
+                                tags: document.getElementById("tags").value
+                                    .split(",")
+                                    .map((tag) => tag.trim())
+                                    .filter((tag) => tag.length > 0)
+                            };
+
+                            await fetch("/api/v1/meals", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(payload)
+                            });
+
+                            document.getElementById("meal-form").reset();
+                            await loadMeals();
+                        });
+
+                        loadMeals();
+                    </script>
+                </body>
+                </html>
+                """;
     }
 
-    @GetMapping("/api/memory")
-    public List<Map<String, Object>> getMemory() {
-        return memory;
+    @PostMapping("/api/v1/meals")
+    public Meal createMeal(@RequestBody CreateMealRequest request) {
+        Meal meal = new Meal(
+                nextMealId++,
+                request.name(),
+                request.price(),
+                request.tags()
+        );
+
+        personalMeals.add(meal);
+        return meal;
     }
 
-    public record MealPlanRequest(
-            String mealTime,
-            String goal,
-            String preferences,
-            String budget
+    @GetMapping("/api/v1/meals")
+    public List<Meal> getMeals() {
+        return personalMeals;
+    }
+
+    public record CreateMealRequest(
+            String name,
+            Double price,
+            List<String> tags
     ) {
     }
 
-    public record MealPlanResponse(
-            String sessionId,
-            String traceId,
-            String speechText
+    public record Meal(
+            long id,
+            String name,
+            Double price,
+            List<String> tags
     ) {
     }
 }
