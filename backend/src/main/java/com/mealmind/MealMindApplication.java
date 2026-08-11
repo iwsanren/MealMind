@@ -1,22 +1,34 @@
 package com.mealmind;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @SpringBootApplication
 @RestController
 public class MealMindApplication {
 
-    private final List<Meal> personalMeals = new ArrayList<>();
-    private long nextMealId = 1;
+    private final JdbcTemplate jdbcTemplate;
+    private final ObjectMapper objectMapper;
+
+    public MealMindApplication(JdbcTemplate jdbcTemplate, ObjectMapper objectMapper) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.objectMapper = objectMapper;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(MealMindApplication.class, args);
@@ -139,20 +151,60 @@ public class MealMindApplication {
 
     @PostMapping("/api/v1/meals")
     public Meal createMeal(@RequestBody CreateMealRequest request) {
-        Meal meal = new Meal(
-                nextMealId++,
+        String sql = """
+                INSERT INTO meal_item (source_type, owner_user_id, name, price, tags)
+                VALUES ('PERSONAL', 1, ?, ?, ?)
+                """;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, request.name());
+            statement.setDouble(2, request.price());
+            statement.setString(3, toJson(request.tags()));
+            return statement;
+        }, keyHolder);
+
+        return new Meal(
+                keyHolder.getKey().longValue(),
                 request.name(),
                 request.price(),
                 request.tags()
         );
-
-        personalMeals.add(meal);
-        return meal;
     }
 
     @GetMapping("/api/v1/meals")
     public List<Meal> getMeals() {
-        return personalMeals;
+        String sql = """
+                SELECT id, name, price, tags
+                FROM meal_item
+                WHERE source_type = 'PERSONAL' AND owner_user_id = 1
+                ORDER BY id
+                """;
+
+        return jdbcTemplate.query(sql, (resultSet, rowNumber) -> new Meal(
+                resultSet.getLong("id"),
+                resultSet.getString("name"),
+                resultSet.getDouble("price"),
+                fromJson(resultSet.getString("tags"))
+        ));
+    }
+
+    private String toJson(List<String> tags) {
+        try {
+            return objectMapper.writeValueAsString(tags);
+        } catch (JsonProcessingException exception) {
+            throw new IllegalStateException(exception);
+        }
+    }
+
+    private List<String> fromJson(String tagsJson) {
+        try {
+            return objectMapper.readValue(tagsJson, new TypeReference<>() {
+            });
+        } catch (JsonProcessingException exception) {
+            throw new IllegalStateException(exception);
+        }
     }
 
     public record CreateMealRequest(

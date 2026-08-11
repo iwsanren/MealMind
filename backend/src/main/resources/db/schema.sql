@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS meal_item (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    source_type VARCHAR(16) NOT NULL,
+    owner_user_id BIGINT NOT NULL,
+    name VARCHAR(128) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    tags JSON NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    INDEX idx_personal_meal_owner (owner_user_id, source_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

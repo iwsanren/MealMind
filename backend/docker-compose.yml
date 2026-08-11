@@ -1,8 +1,32 @@
 services:
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: mealmind
+      MYSQL_USER: mealmind
+      MYSQL_PASSWORD: mealmind
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mealmind-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
   mealmind-backend:
     build: .
     ports:
       - "8080:8080"
     environment:
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mealmind?serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: mealmind
+      SPRING_DATASOURCE_PASSWORD: mealmind
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mealmind-mysql-data:
