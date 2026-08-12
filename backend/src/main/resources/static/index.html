@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealMind</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 680px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+        }
+
+        input, button {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>My Meals</h1>
+
+<form id="meal-form">
+    <label>
+        Meal Name
+        <input id="name" placeholder="e.g. Chicken Salad">
+    </label>
+
+    <label>
+        Price
+        <input id="price" type="number" placeholder="e.g. 22">
+    </label>
+
+    <label>
+        Tags
+        <input id="tags" placeholder="e.g. Lunch, Light, High Protein">
+    </label>
+
+    <button type="submit">Add Meal</button>
+</form>
+
+<h2>Current Meals</h2>
+<ul id="meal-list"></ul>
+
+<script>
+    async function loadMeals() {
+        const response = await fetch("/api/v1/meals");
+        const meals = await response.json();
+        const list = document.getElementById("meal-list");
+
+        list.innerHTML = "";
+
+        meals.forEach((meal) => {
+            const item = document.createElement("li");
+            item.textContent =
+                "#" + meal.id +
+                " " + meal.name +
+                " | $" + meal.price +
+                " | " + (meal.tags || []).join(", ");
+            list.appendChild(item);
+        });
+    }
+
+    document.getElementById("meal-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const payload = {
+            name: document.getElementById("name").value,
+            price: Number(document.getElementById("price").value),
+            tags: document.getElementById("tags").value
+                .split(",")
+                .map((tag) => tag.trim())
+                .filter((tag) => tag.length > 0)
+        };
+
+        await fetch("/api/v1/meals", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        document.getElementById("meal-form").reset();
+        await loadMeals();
+    });
+
+    loadMeals();
+</script>
+</body>
+</html>
