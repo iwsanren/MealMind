@@ -1,29 +1,103 @@
 package com.mealmind.service;
 
-import com.mealmind.entity.MealItem;
+import com.mealmind.dto.meal.MealRequest;
+import com.mealmind.model.MealItem;
+import com.mealmind.entity.MealItemRow;
+import com.mealmind.enums.SourceMode;
+import com.mealmind.exception.MealException;
 import com.mealmind.mapper.MealMapper;
+import com.mealmind.model.SlotBundle;
+import com.mealmind.util.JsonService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class MealService {
 
-    private static final Long CURRENT_USER_ID = 1L;
     private final MealMapper mealMapper;
+    private final JsonService jsonService;
 
-    public MealService(MealMapper mealMapper) {
+    public MealService(MealMapper mealMapper, JsonService jsonService) {
         this.mealMapper = mealMapper;
+        this.jsonService = jsonService;
     }
 
-    public MealItem createMeal(MealItem mealItem) {
-        mealItem.setSourceType("PERSONAL");
-        mealItem.setOwnerUserId(CURRENT_USER_ID);
-        mealMapper.insert(mealItem);
-        return mealItem;
+    // ---- reads ----
+    public List<MealItem> findPersonalMeals(Long userId) {
+        return mealMapper.findPersonalMeals(userId).stream().map(this::toMealItem).toList();
     }
 
-    public List<MealItem> getMeals() {
-        return mealMapper.findPersonalMeals(CURRENT_USER_ID);
+    public List<MealItem> findPublicMeals() {
+        return mealMapper.findPublicMeals().stream().map(this::toMealItem).toList();
+    }
+
+    // ---- writes (PERSONAL only) ----
+    @Transactional
+    public MealItem createPersonalMeal(Long userId, MealRequest request) {
+        // TODO (later step): validate name non-blank + every tag in the SlotOption dictionary.
+        MealItemRow row = toRow(null, SourceMode.PERSONAL, userId, request);
+        mealMapper.insert(row);                     // useGeneratedKeys fills row.id
+        return toMealItem(row);
+    }
+
+    @Transactional
+    public MealItem updatePersonalMeal(Long userId, Long mealId, MealRequest request) {
+        // TODO (later step): same validation as createPersonalMeal.
+        MealItemRow row = toRow(mealId, SourceMode.PERSONAL, userId, request);
+        if (mealMapper.updatePersonal(row) == 0) {
+            // 0 rows => not found OR not owned by this user (indistinguishable on purpose)
+            throw new MealException("Personal meal not found or not editable");
+        }
+        return toMealItem(mealMapper.findPersonalById(mealId, userId));
+    }
+
+    @Transactional
+    public void deletePersonalMeal(Long userId, Long mealId) {
+        if (mealMapper.deletePersonal(mealId, userId) == 0) {
+            throw new MealException("Personal meal not found or not deletable");
+        }
+    }
+
+    // ---- row <-> domain ----
+    private MealItemRow toRow(Long id, SourceMode sourceMode, Long ownerUserId, MealRequest request) {
+        SlotBundle slots = request.toSlots();
+        MealItemRow row = new MealItemRow();
+        row.setId(id);
+        row.setSourceType(sourceMode.name());
+        row.setOwnerUserId(ownerUserId);
+        row.setName(request.name() == null ? null : request.name().trim());
+        row.setMealTime(jsonService.toJsonArray(slots.mealTime()));
+        row.setMood(jsonService.toJsonArray(slots.mood()));
+        row.setScene(jsonService.toJsonArray(slots.scene()));
+        row.setHealthGoal(jsonService.toJsonArray(slots.healthGoal()));
+        row.setCuisine(jsonService.toJsonArray(slots.cuisine()));
+        row.setTaste(jsonService.toJsonArray(slots.taste()));
+        row.setConvenience(jsonService.toJsonArray(slots.convenience()));
+        return row;
+    }
+
+    private MealItem toMealItem(MealItemRow row) {
+        if (row == null) {
+            return null;
+        }
+        SlotBundle slots = new SlotBundle(
+                jsonService.fromJsonArray(row.getMealTime()),
+                jsonService.fromJsonArray(row.getMood()),
+                jsonService.fromJsonArray(row.getScene()),
+                jsonService.fromJsonArray(row.getHealthGoal()),
+                jsonService.fromJsonArray(row.getCuisine()),
+                jsonService.fromJsonArray(row.getTaste()),
+                jsonService.fromJsonArray(row.getConvenience())
+        );
+        return new MealItem(
+                row.getId(),
+                SourceMode.valueOf(row.getSourceType()),
+                row.getOwnerUserId(),
+                row.getName(),
+                slots,
+                0d                                 // matchScore: filled by the ranking step later
+        );
     }
 }

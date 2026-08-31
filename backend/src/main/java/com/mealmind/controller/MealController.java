@@ -1,38 +1,38 @@
 package com.mealmind.controller;
 
-import com.mealmind.converter.MealConverter;
+import com.mealmind.constants.MealMindConstants;
 import com.mealmind.dto.meal.CreateMealRequest;
+import com.mealmind.dto.meal.MealRequest;
 import com.mealmind.dto.meal.MealResponse;
 import com.mealmind.service.MealService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/meals")
 public class MealController {
 
     private final MealService mealService;
-    private final MealConverter mealConverter;
 
-    public MealController(MealService mealService, MealConverter mealConverter) {
+    public MealController(MealService mealService) {
         this.mealService = mealService;
-        this.mealConverter = mealConverter;
     }
 
-    @PostMapping("/api/v1/meals")
-    public MealResponse createMeal(@RequestBody CreateMealRequest request) {
-        return mealConverter.toResponse(
-                mealService.createMeal(mealConverter.toMealItem(request))
-        );
+    // X-User-Id header identifies the caller; defaults to "1" until auth exists (later step).
+    @GetMapping("/personal")
+    public List<MealResponse> findPersonal(
+            @RequestHeader(value = MealMindConstants.USER_ID, defaultValue = "1") Long userId) {
+        return mealService.findPersonalMeals(userId).stream().map(MealResponse::from).toList();
     }
 
-    @GetMapping("/api/v1/meals")
-    public List<MealResponse> getMeals() {
-        return mealService.getMeals().stream()
-                .map(mealConverter::toResponse)
-                .toList();
+    @PostMapping("/personal")
+    public MealResponse createPersonal(
+            @RequestHeader(value = MealMindConstants.USER_ID, defaultValue = "1") Long userId,
+            @RequestBody MealRequest request) {
+        return MealResponse.from(mealService.createPersonalMeal(userId, request));
     }
+
+    // PUT /personal/{mealId} + DELETE /personal/{mealId} follow the same header pattern
+    // (@PathVariable Long mealId); GET /public takes no header -> mealService.findPublicMeals().
 }
