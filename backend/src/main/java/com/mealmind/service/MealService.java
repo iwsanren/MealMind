@@ -36,7 +36,7 @@ public class MealService {
     // ---- writes (PERSONAL only) ----
     @Transactional
     public MealItem createPersonalMeal(Long userId, MealRequest request) {
-        // TODO (later step): validate name non-blank + every tag in the SlotOption dictionary.
+        validateMealRequest(request);
         MealItemRow row = toRow(null, SourceMode.PERSONAL, userId, request);
         mealMapper.insert(row);                     // useGeneratedKeys fills row.id
         return toMealItem(row);
@@ -44,7 +44,7 @@ public class MealService {
 
     @Transactional
     public MealItem updatePersonalMeal(Long userId, Long mealId, MealRequest request) {
-        // TODO (later step): same validation as createPersonalMeal.
+        validateMealRequest(request);
         MealItemRow row = toRow(mealId, SourceMode.PERSONAL, userId, request);
         if (mealMapper.updatePersonal(row) == 0) {
             // 0 rows => not found OR not owned by this user (indistinguishable on purpose)
@@ -76,6 +76,23 @@ public class MealService {
         row.setTaste(jsonService.toJsonArray(slots.taste()));
         row.setConvenience(jsonService.toJsonArray(slots.convenience()));
         return row;
+    }
+
+    /**
+     * Shared precondition check for create/update. Runs before any DB write, so
+     * bad input fails fast as a 400 (MealException -> GlobalExceptionHandler).
+     */
+    private void validateMealRequest(MealRequest request) {
+        if (request == null || request.name() == null || request.name().isBlank()) {
+            throw new MealException("Meal name must not be blank");
+        }
+        // mealTime is the one mandatory dimension; checked AFTER toSlots() so that
+        // blank / duplicate entries have already been stripped by SlotBundle.
+        if (request.toSlots().mealTime().isEmpty()) {
+            throw new MealException("mealTime must contain at least one tag");
+        }
+        // TODO (next prompt): call SlotOptionService.validate(slots) to reject any
+        // tag not present in the SlotOption dictionary across all seven dimensions.
     }
 
     private MealItem toMealItem(MealItemRow row) {
