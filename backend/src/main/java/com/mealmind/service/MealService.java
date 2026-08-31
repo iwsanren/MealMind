@@ -36,16 +36,18 @@ public class MealService {
     // ---- writes (PERSONAL only) ----
     @Transactional
     public MealItem createPersonalMeal(Long userId, MealRequest request) {
-        validateMealRequest(request);
-        MealItemRow row = toRow(null, SourceMode.PERSONAL, userId, request);
+        SlotBundle slots = request.toSlots();
+        validateMealRequest(request, slots);
+        MealItemRow row = toRow(null, SourceMode.PERSONAL, userId, request.name(), slots);
         mealMapper.insert(row);                     // useGeneratedKeys fills row.id
         return toMealItem(row);
     }
 
     @Transactional
     public MealItem updatePersonalMeal(Long userId, Long mealId, MealRequest request) {
-        validateMealRequest(request);
-        MealItemRow row = toRow(mealId, SourceMode.PERSONAL, userId, request);
+        SlotBundle slots = request.toSlots();
+        validateMealRequest(request, slots);
+        MealItemRow row = toRow(mealId, SourceMode.PERSONAL, userId, request.name(), slots);
         if (mealMapper.updatePersonal(row) == 0) {
             // 0 rows => not found OR not owned by this user (indistinguishable on purpose)
             throw new MealException("Personal meal not found or not editable");
@@ -61,13 +63,12 @@ public class MealService {
     }
 
     // ---- row <-> domain ----
-    private MealItemRow toRow(Long id, SourceMode sourceMode, Long ownerUserId, MealRequest request) {
-        SlotBundle slots = request.toSlots();
+    private MealItemRow toRow(Long id, SourceMode sourceMode, Long ownerUserId, String name, SlotBundle slots) {
         MealItemRow row = new MealItemRow();
         row.setId(id);
         row.setSourceType(sourceMode.name());
         row.setOwnerUserId(ownerUserId);
-        row.setName(request.name() == null ? null : request.name().trim());
+        row.setName(name.trim());
         row.setMealTime(jsonService.toJsonArray(slots.mealTime()));
         row.setMood(jsonService.toJsonArray(slots.mood()));
         row.setScene(jsonService.toJsonArray(slots.scene()));
@@ -82,13 +83,13 @@ public class MealService {
      * Shared precondition check for create/update. Runs before any DB write, so
      * bad input fails fast as a 400 (MealException -> GlobalExceptionHandler).
      */
-    private void validateMealRequest(MealRequest request) {
+    private void validateMealRequest(MealRequest request, SlotBundle slots) {
         if (request == null || request.name() == null || request.name().isBlank()) {
             throw new MealException("Meal name must not be blank");
         }
         // mealTime is the one mandatory dimension; checked AFTER toSlots() so that
         // blank / duplicate entries have already been stripped by SlotBundle.
-        if (request.toSlots().mealTime().isEmpty()) {
+        if (slots.mealTime().isEmpty()) {
             throw new MealException("mealTime must contain at least one tag");
         }
         // TODO (next prompt): call SlotOptionService.validate(slots) to reject any
