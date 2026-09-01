@@ -1,10 +1,9 @@
 package com.mealmind.controller;
 
 import com.mealmind.constants.MealMindConstants;
-import com.mealmind.dto.meal.CreateMealRequest;
 import com.mealmind.dto.meal.MealRequest;
 import com.mealmind.dto.meal.MealResponse;
-import com.mealmind.service.MealService;
+import com.mealmind.service.meal.MealService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

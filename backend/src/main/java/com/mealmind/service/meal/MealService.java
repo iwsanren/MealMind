@@ -1,4 +1,4 @@
-package com.mealmind.service;
+package com.mealmind.service.meal;
 
 import com.mealmind.dto.meal.MealRequest;
 import com.mealmind.model.MealItem;

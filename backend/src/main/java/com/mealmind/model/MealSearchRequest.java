@@ -4,6 +4,9 @@ import com.mealmind.enums.SourceMode;
 import java.util.List;
 
 /**
+ * Layer1: search. For each constrained dimension, it asks, “Does this dish overlap with the query?”
+ *         —JSON_OVERLAPS counts a match as long as there is a single tag match.
+ *         This determines “which items make it into the candidate set.”
  * Retrieval request for the recommendation pipeline. Packs the four inputs
  * explicitly so the personal and public libraries are never queried together.
  */

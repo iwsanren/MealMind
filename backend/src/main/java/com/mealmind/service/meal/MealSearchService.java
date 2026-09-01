@@ -4,13 +4,14 @@ import com.mealmind.enums.SourceMode;
 import com.mealmind.exception.MealException;
 import com.mealmind.model.MealItem;
 import com.mealmind.model.MealSearchRequest;
-import com.mealmind.service.MealService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * Recommendation pipeline layer 1: source-isolated recall.
+ * Layer1: search. For each constrained dimension, it asks, “Does this dish overlap with the query?”
+ *         —JSON_OVERLAPS counts a match as long as there is a single tag match.
+ *         This determines “which items make it into the candidate set.”
  * Guards the request, then delegates to MealService.search (MySQL JSON_OVERLAPS).
  * Scoring and excludeMealIds filtering belong to later layers.
  */
