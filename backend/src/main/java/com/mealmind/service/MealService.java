@@ -18,6 +18,7 @@ public class MealService {
 
     private final MealMapper mealMapper;
     private final JsonService jsonService;
+    private static final int SEARCH_LIMIT = 50; // Max rows pulled from DB in one recall; ranking later trims to a top-N.
 
     public MealService(MealMapper mealMapper, JsonService jsonService) {
         this.mealMapper = mealMapper;
@@ -117,5 +118,27 @@ public class MealService {
                 slots,
                 0d                                 // matchScore: filled by the ranking step later
         );
+    }
+
+    /**
+     * Slot-overlap retrieval (recommendation pipeline layer 1). Recall only:
+     * no scoring, no exclude filtering; matchScore stays 0 on every result.
+     */
+    public List<MealItem> search(SourceMode sourceMode, Long userId, SlotBundle slots) {
+        SlotBundle safe = slots == null ? SlotBundle.empty() : slots;
+        boolean personal = (sourceMode == SourceMode.PERSONAL);
+        List<MealItemRow> rows = mealMapper.search(
+                personal,
+                userId,
+                jsonService.toJsonArray(safe.mealTime()),
+                jsonService.toJsonArray(safe.mood()),
+                jsonService.toJsonArray(safe.scene()),
+                jsonService.toJsonArray(safe.healthGoal()),
+                jsonService.toJsonArray(safe.cuisine()),
+                jsonService.toJsonArray(safe.taste()),
+                jsonService.toJsonArray(safe.convenience()),
+                SEARCH_LIMIT
+        );
+        return rows.stream().map(this::toMealItem).toList();
     }
 }
