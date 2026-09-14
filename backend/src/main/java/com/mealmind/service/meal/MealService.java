@@ -7,6 +7,7 @@ import com.mealmind.enums.SourceMode;
 import com.mealmind.exception.MealException;
 import com.mealmind.mapper.MealMapper;
 import com.mealmind.model.SlotBundle;
+import com.mealmind.service.slot.SlotOptionService;
 import com.mealmind.util.JsonService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +19,13 @@ public class MealService {
 
     private final MealMapper mealMapper;
     private final JsonService jsonService;
+    private final SlotOptionService slotOptionService;
     private static final int SEARCH_LIMIT = 50; // Max rows pulled from DB in one recall; ranking later trims to a top-N.
 
-    public MealService(MealMapper mealMapper, JsonService jsonService) {
+    public MealService(MealMapper mealMapper, JsonService jsonService, SlotOptionService slotOptionService) {
         this.mealMapper = mealMapper;
         this.jsonService = jsonService;
+        this.slotOptionService = slotOptionService;
     }
 
     // ---- reads ----
@@ -93,8 +96,7 @@ public class MealService {
         if (slots.mealTime().isEmpty()) {
             throw new MealException("mealTime must contain at least one tag");
         }
-        // TODO (next prompt): call SlotOptionService.validate(slots) to reject any
-        // tag not present in the SlotOption dictionary across all seven dimensions.
+        slotOptionService.validate(slots);
     }
 
     private MealItem toMealItem(MealItemRow row) {
