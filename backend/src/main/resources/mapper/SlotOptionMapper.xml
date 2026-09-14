@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mealmind.mapper.SlotOptionMapper">
+
+    <select id="findEnabledValues" resultType="java.lang.String">
+        SELECT option_value
+        FROM slot_option
+        WHERE slot_name = #{slotName}
+        AND enabled = 1
+        ORDER BY sort_order ASC, id ASC
+    </select>
+
+</mapper>
