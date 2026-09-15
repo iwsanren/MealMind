@@ -42,3 +42,23 @@ CREATE TABLE slot_option (
                            UNIQUE KEY uk_slot_option (slot_name, option_value),
                            INDEX idx_slot_enabled (slot_name, enabled, sort_order)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- session_state: multi-turn conversation state (phase, accumulated slots, last
+-- recommendations). Primary key is business-generated ("sess_" + UUID hex), not
+-- an auto-increment id, since the session id is minted before the first INSERT
+-- and handed back to the caller. slots is a JSON object: the 7 tag dimensions
+-- plus a "_meta" sub-object carrying sourceMode (see SessionStateService).
+-- Same DROP+CREATE-on-every-startup rebuild as the tables above.
+DROP TABLE IF EXISTS session_state;
+
+CREATE TABLE session_state (
+                           id                   VARCHAR(64) NOT NULL,                -- "sess_" + UUID hex
+                           user_id              BIGINT      NOT NULL,
+                           phase                VARCHAR(32) NOT NULL,                -- SessionPhase: START/CLARIFY/RECOMMEND/PLAN
+                           slots                JSON        NOT NULL,                -- 7 dimensions + _meta.sourceMode
+                           last_recommendations JSON        NOT NULL,                -- meal ids from the last recommend round
+                           created_at           DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                           updated_at           DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                           PRIMARY KEY (id),
+                           INDEX idx_session_user (user_id, updated_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

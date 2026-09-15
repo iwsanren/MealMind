@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mealmind.mapper.SessionMapper">
+
+    <resultMap id="SessionRowMap" type="com.mealmind.entity.SessionRow">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="phase" column="phase"/>
+        <result property="slots" column="slots"/>
+        <result property="lastRecommendations" column="last_recommendations"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.mealmind.entity.SessionRow">
+        INSERT INTO session_state (
+        id, user_id, phase, slots, last_recommendations, created_at, updated_at
+        ) VALUES (
+        #{id}, #{userId}, #{phase}, #{slots}, #{lastRecommendations}, NOW(), NOW()
+        )
+    </insert>
+
+    <select id="findById" resultMap="SessionRowMap">
+        SELECT id, user_id, phase, slots, last_recommendations, created_at, updated_at
+        FROM session_state
+        WHERE id = #{id}
+        AND user_id = #{userId}
+    </select>
+
+    <!-- Ownership guard lives in WHERE: only the row owned by this user is touched -->
+    <update id="update" parameterType="com.mealmind.entity.SessionRow">
+        UPDATE session_state
+        SET phase = #{phase},
+        slots = #{slots},
+        last_recommendations = #{lastRecommendations},
+        updated_at = NOW()
+        WHERE id = #{id}
+        AND user_id = #{userId}
+    </update>
+
+</mapper>
