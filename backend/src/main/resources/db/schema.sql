@@ -62,3 +62,25 @@ CREATE TABLE session_state (
                            PRIMARY KEY (id),
                            INDEX idx_session_user (user_id, updated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- recommend_feedback: append-only log of a user's reaction (like/dislike/accept/
+-- ignore, etc. - defined by the frontend, backend only checks non-blank) to a
+-- recommended meal. Feeds future recommendation/ranking tuning; nothing reads
+-- it yet. item_id is a soft reference to meal_item.id - no FK constraint, same
+-- as the reference design - so a meal can be deleted without invalidating the
+-- historical feedback row. Same DROP+CREATE-on-every-startup rebuild as the
+-- tables above.
+DROP TABLE IF EXISTS recommend_feedback;
+
+CREATE TABLE recommend_feedback (
+                           id            BIGINT       NOT NULL AUTO_INCREMENT,
+                           user_id       BIGINT       NOT NULL,
+                           session_id    VARCHAR(64)  NOT NULL,
+                           item_id       BIGINT       NULL DEFAULT NULL,        -- soft reference to meal_item.id, no FK
+                           action        VARCHAR(32)  NOT NULL,                 -- free string: like/dislike/accept/ignore/... (frontend-defined)
+                           rating        INT          NULL DEFAULT NULL,
+                           reason        VARCHAR(512) NULL DEFAULT NULL,
+                           created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                           PRIMARY KEY (id),
+                           INDEX idx_feedback_user (user_id, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
