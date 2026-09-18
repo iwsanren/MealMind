@@ -84,3 +84,37 @@ CREATE TABLE recommend_feedback (
                            PRIMARY KEY (id),
                            INDEX idx_feedback_user (user_id, created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- diet_request_trace: one row per Orchestrator request/turn, recording what
+-- happened (trace_json - the raw event list) and, optionally, a human label
+-- of what SHOULD have happened (expected_intent/expected_slots/
+-- expected_clarify_action) for later evaluation/tuning. Writing a row is a
+-- future concern (Part 2's TraceScope, once the agent-call library is in
+-- place); this table + the query/label API around it is the only part built
+-- now. Same DROP+CREATE-on-every-startup rebuild as the tables above.
+DROP TABLE IF EXISTS diet_request_trace;
+
+CREATE TABLE diet_request_trace (
+                           id                      BIGINT       NOT NULL AUTO_INCREMENT,
+                           trace_id                VARCHAR(128) NOT NULL,
+                           session_id              VARCHAR(64)  NOT NULL,
+                           user_id                 BIGINT       NOT NULL,
+                           status                  VARCHAR(32)  NOT NULL,
+                           event_count             INT          NOT NULL DEFAULT 0,
+                           duration_ms             BIGINT       NULL DEFAULT NULL,
+                           error_message           TEXT         NULL,
+                           trace_json              JSON         NOT NULL,
+                           created_at              DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                           updated_at              DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                           expected_intent         VARCHAR(64)  NULL DEFAULT NULL,
+                           expected_slots          JSON         NULL,
+                           expected_clarify_action VARCHAR(32)  NULL DEFAULT NULL,
+                           labeled_by              BIGINT       NULL DEFAULT NULL,
+                           labeled_at              DATETIME     NULL DEFAULT NULL,
+                           label_note              VARCHAR(512) NULL DEFAULT NULL,
+                           PRIMARY KEY (id),
+                           UNIQUE KEY uk_request_trace (trace_id),
+                           INDEX idx_request_trace_session (session_id, created_at),
+                           INDEX idx_request_trace_user (user_id, created_at),
+                           INDEX idx_request_trace_status (status, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
