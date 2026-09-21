@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { filterMealsBySlots } from '../../lib/mealFilters'
 import { SLOT_DIMENSIONS, type MealResponse, type SlotDimension } from '../../types/meal'
 
 export type SelectedTags = Record<SlotDimension, Set<string>>
@@ -25,15 +26,7 @@ export function useMealFilters(meals: MealResponse[]) {
     })
   }
 
-  const filteredMeals = useMemo(() => {
-    return meals.filter((meal) =>
-      SLOT_DIMENSIONS.every((dimension) => {
-        const chosen = selected[dimension]
-        if (chosen.size === 0) return true
-        return meal[dimension].some((value) => chosen.has(value))
-      }),
-    )
-  }, [meals, selected])
+  const filteredMeals = useMemo(() => filterMealsBySlots(meals, selected), [meals, selected])
 
   return { selected, toggleTag, filteredMeals }
 }

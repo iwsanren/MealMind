@@ -7,9 +7,10 @@ import { Button } from './Button'
 
 interface FeedbackButtonsProps {
   mealId: number
+  sessionId?: string
 }
 
-export function FeedbackButtons({ mealId }: FeedbackButtonsProps) {
+export function FeedbackButtons({ mealId, sessionId }: FeedbackButtonsProps) {
   const [feedbackGiven, setFeedbackGiven] = useState<FeedbackRequest['action'] | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -18,9 +19,9 @@ export function FeedbackButtons({ mealId }: FeedbackButtonsProps) {
     setSubmitting(true)
     setError(null)
     try {
-      const sessionId = await getOrCreateSessionId()
+      const resolvedSessionId = sessionId ?? (await getOrCreateSessionId())
       await submitFeedback({
-        sessionId,
+        sessionId: resolvedSessionId,
         itemId: mealId,
         action,
         rating: action === 'LIKE' ? 5 : 2,
