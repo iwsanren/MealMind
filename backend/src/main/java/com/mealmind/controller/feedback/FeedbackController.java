@@ -6,7 +6,7 @@ import com.mealmind.service.feedback.FeedbackService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/diet/feedback")
+@RequestMapping("/api/v1/feedback")
 public class FeedbackController {
 
     private final FeedbackService feedbackService;

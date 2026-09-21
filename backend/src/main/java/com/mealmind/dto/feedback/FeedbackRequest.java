@@ -1,7 +1,7 @@
 package com.mealmind.dto.feedback;
 
 /**
- * Inbound payload for POST /api/v1/diet/feedback. action is a free string
+ * Inbound payload for POST /api/v1/feedback. action is a free string
  * (like/dislike/accept/ignore/...) defined by the frontend; the backend only
  * checks it's non-blank.
  */

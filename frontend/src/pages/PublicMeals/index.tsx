@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getPublicMeals, getSlotOptions } from '../../api/meals'
 import { EmptyState } from '../../components/EmptyState'
+import { FeedbackButtons } from '../../components/FeedbackButtons'
 import { MealCard } from '../../components/MealCard'
 import { ApiError } from '../../lib/apiClient'
 import type { MealResponse, SlotOptionsMap } from '../../types/meal'
@@ -61,7 +62,11 @@ export function PublicMealsPage() {
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {filteredMeals.map((meal) => (
-                <MealCard key={meal.id} meal={meal} />
+                <MealCard
+                  key={meal.id}
+                  meal={meal}
+                  actions={<FeedbackButtons mealId={meal.id} />}
+                />
               ))}
             </div>
           )}

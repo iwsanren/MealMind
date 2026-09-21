@@ -8,6 +8,7 @@ import {
 } from '../../api/meals'
 import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
+import { FeedbackButtons } from '../../components/FeedbackButtons'
 import { MealCard } from '../../components/MealCard'
 import { ApiError } from '../../lib/apiClient'
 import type { MealRequest, MealResponse, SlotOptionsMap } from '../../types/meal'
@@ -112,14 +113,17 @@ export function PersonalMealsPage() {
                     meal={meal}
                     className={editingMeal?.id === meal.id ? 'border-accent' : ''}
                     actions={
-                      <>
-                        <Button variant="secondary" onClick={() => setEditingMeal(meal)}>
-                          Edit
-                        </Button>
-                        <Button variant="danger" onClick={() => handleDelete(meal)}>
-                          Delete
-                        </Button>
-                      </>
+                      <div className="flex flex-col items-end gap-2">
+                        <div className="flex gap-2">
+                          <Button variant="secondary" onClick={() => setEditingMeal(meal)}>
+                            Edit
+                          </Button>
+                          <Button variant="danger" onClick={() => handleDelete(meal)}>
+                            Delete
+                          </Button>
+                        </div>
+                        <FeedbackButtons mealId={meal.id} />
+                      </div>
                     }
                   />
                 ))}
