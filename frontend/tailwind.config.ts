@@ -12,6 +12,8 @@ export default {
         'text-secondary': '#767671',
         accent: '#3B6E5E',
         'accent-subtle': '#E8EFEA',
+        danger: '#B3503F',
+        'danger-subtle': '#F5E7E3',
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'Segoe UI', 'sans-serif'],

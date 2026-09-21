@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { getPublicMeals, getSlotOptions } from '../../api/meals'
 import { EmptyState } from '../../components/EmptyState'
+import { MealCard } from '../../components/MealCard'
 import { ApiError } from '../../lib/apiClient'
 import type { MealResponse, SlotOptionsMap } from '../../types/meal'
 import { FilterPanel } from './FilterPanel'
-import { MealCard } from './MealCard'
 import { useMealFilters } from './useMealFilters'
 
 export function PublicMealsPage() {

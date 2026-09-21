@@ -1,11 +1,12 @@
 import type { ButtonHTMLAttributes } from 'react'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost'
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger'
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary: 'border border-accent bg-accent text-white hover:bg-accent/90',
   secondary: 'border border-transparent bg-accent-subtle text-accent hover:bg-accent-subtle/70',
   ghost: 'border border-border bg-transparent text-text-secondary hover:border-accent hover:text-accent',
+  danger: 'border border-danger bg-transparent text-danger hover:bg-danger-subtle',
 }
 
 export function buttonClassName(variant: ButtonVariant = 'primary', className = ''): string {
