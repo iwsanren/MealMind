@@ -49,6 +49,15 @@ User message
 → Trace and feedback
 ```
 
+## Local Development
+
+Run `docker compose up` from the repository root to start MySQL, the backend, and the frontend together:
+
+- Frontend: http://localhost:5173
+- Backend: http://localhost:8080
+
+The frontend container runs the Vite dev server with the source directory mounted in, so code changes hot-reload without rebuilding the image. `backend/docker-compose.yml` still exists separately for starting just MySQL + backend when you only need to work on the backend.
+
 ## Current Status
 
 This repository is being initialized. The immediate next step is to define the MVP design and build the smallest working version of the app.
