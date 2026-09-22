@@ -25,9 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Full-stack test: controller -> service -> mapper -> real MySQL (schema.sql/
- * data.sql run at context startup, same as the running app). Requires a
- * reachable database matching application.yml's datasource - on this
+ * Full-stack test: controller -> service -> mapper -> real MySQL (Flyway
+ * migrations under db/migration run at context startup, same as the running
+ * app). Requires a reachable database matching application.yml's datasource - on this
  * machine that means SPRING_DATASOURCE_URL pointed at 127.0.0.1 (see the
  * project's other "run the app locally" notes; "localhost" resolves to an
  * IPv6 address here that MySQL isn't listening on).
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class AgentTraceControllerIntegrationTest {
 
-    private static final String BASE = "/api/v1/diet/debug";
+    private static final String BASE = "/api/v1/debug";
     private static final DateTimeFormatter ISO = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     @Autowired
