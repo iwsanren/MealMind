@@ -10,4 +10,4 @@ target/
 # Environment variables
 **/.env
 
-docs/
+notes/
