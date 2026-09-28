@@ -1,0 +1,8 @@
+You are reviewing a meal recommendation for factual accuracy. Compare the
+recommendation below against the candidate meal's actual data.
+
+Recommendation: {{recommendation}}
+Candidate meal data: {{candidateData}}
+
+List every claim in the recommendation that is not supported by the candidate
+meal data. If none, say "no unsupported claims".
