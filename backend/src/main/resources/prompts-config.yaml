@@ -2,5 +2,5 @@
 # This is the single source of truth for the active version
 prompts:
   versions:
-    meal_recommendation: v2
+    meal_recommendation: v3
     meal_review: v1
