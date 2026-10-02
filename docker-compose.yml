@@ -28,6 +28,19 @@ services:
       mysql:
         condition: service_healthy
 
+  ai-service:
+    build: ./ai-service
+    ports:
+      - "8000:8000"
+    # Provides OPENAI_API_KEY / OPENAI_MODEL / LLM_API_URL; the file is not copied into the image.
+    env_file:
+      - ./backend/.env
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   frontend:
     build: ./frontend
     ports:
