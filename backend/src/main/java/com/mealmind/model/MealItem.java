@@ -7,6 +7,8 @@ import com.mealmind.enums.SourceMode;
  * matchScore that the recommendation/ranking step fills later (0 for plain CRUD).
  * MyBatis never builds this type (only MealItemRow), so it stays immutable.
  */
+
+//TODO: add fields: allergens, ingredients, calories
 public record MealItem(
         Long id,
         SourceMode sourceType,

@@ -1,0 +1,6 @@
+# Declares which prompt version is "current" for each scenario.
+# This is the single source of truth for the active version
+prompts:
+  versions:
+    meal_recommendation: v3
+    meal_review: v1

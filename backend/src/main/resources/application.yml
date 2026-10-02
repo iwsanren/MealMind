@@ -1,6 +1,11 @@
 spring:
   application:
     name: mealmind-backend
+  # Pulls prompts-config.yaml in as part of the same configuration tree,
+  # so PromptProperties (@ConfigurationProperties(prefix = "prompts")) can
+  # bind to it without merging its content into this file by hand.
+  config:
+    import: classpath:prompts-config.yaml
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/mealmind?serverTimezone=UTC}
     username: ${SPRING_DATASOURCE_USERNAME:mealmind}
