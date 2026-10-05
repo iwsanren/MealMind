@@ -1,5 +1,6 @@
 package com.mealmind.service.meal;
 
+import com.mealmind.enums.Allergen;
 import com.mealmind.enums.SourceMode;
 import com.mealmind.exception.MealException;
 import com.mealmind.model.MealItem;
@@ -32,7 +33,14 @@ public class MealSearchService {
         if (request.sourceMode() == SourceMode.PERSONAL && request.userId() == null) {
             throw new MealException("userId is required for PERSONAL search");
         }
+        if (request.maxPrice() != null && request.maxPrice().signum() < 0) {
+            throw new MealException("maxPrice must not be negative");
+        }
+        // Canonicalize and validate allergen tokens so "Shellfish " and "shellfish" are the same filter.
+        List<String> allergens = request.excludeAllergens() == null ? List.of()
+                : request.excludeAllergens().stream().map(a -> Allergen.fromToken(a).token()).distinct().toList();
         // TODO (later step): invoked by the Orchestrator recommendation flow.
-        return mealService.search(request.sourceMode(), request.userId(), request.slots());
+        return mealService.search(request.sourceMode(), request.userId(), request.slots(),
+                request.maxPrice(), allergens);
     }
 }

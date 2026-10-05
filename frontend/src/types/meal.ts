@@ -22,6 +22,21 @@ export const DIMENSION_LABELS: Record<SlotDimension, string> = {
   convenience: 'Convenience',
 }
 
+/** Closed allergen vocabulary; must match backend enums/Allergen.java. */
+export const ALLERGENS = [
+  'milk',
+  'egg',
+  'fish',
+  'shellfish',
+  'tree_nut',
+  'peanut',
+  'wheat',
+  'soy',
+  'sesame',
+] as const
+
+export type Allergen = (typeof ALLERGENS)[number]
+
 export interface MealResponse {
   id: number
   sourceType: string
@@ -33,6 +48,14 @@ export interface MealResponse {
   cuisine: string[]
   taste: string[]
   convenience: string[]
+  /** USD per serving; null = unknown */
+  price: number | null
+  /** grams per serving; null = unknown */
+  proteinG: number | null
+  /** kcal per serving; null = unknown */
+  calories: number | null
+  /** null = unknown, [] = known to contain none */
+  allergens: string[] | null
   matchScore: number
 }
 
@@ -45,4 +68,8 @@ export interface MealRequest {
   cuisine: string[]
   taste: string[]
   convenience: string[]
+  price: number | null
+  proteinG: number | null
+  calories: number | null
+  allergens: string[] | null
 }

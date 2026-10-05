@@ -1,6 +1,7 @@
 package com.mealmind.service.meal;
 
 import com.mealmind.enums.SourceMode;
+import com.mealmind.model.MealFacts;
 import com.mealmind.model.MealItem;
 import com.mealmind.model.MealRankRequest;
 import com.mealmind.model.SlotBundle;
@@ -19,7 +20,7 @@ class MealRankServiceTest {
     private static MealItem meal(long id, List<String> mealTime, List<String> healthGoal) {
         SlotBundle slots = new SlotBundle(mealTime, List.of(), List.of(),
                 healthGoal, List.of(), List.of(), List.of());
-        return new MealItem(id, SourceMode.PUBLIC, null, "meal-" + id, slots, 0d);
+        return new MealItem(id, SourceMode.PUBLIC, null, "meal-" + id, slots, MealFacts.unknown(), 0d);
     }
 
     @Test

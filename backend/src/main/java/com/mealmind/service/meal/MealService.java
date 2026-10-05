@@ -3,14 +3,17 @@ package com.mealmind.service.meal;
 import com.mealmind.dto.meal.MealRequest;
 import com.mealmind.model.MealItem;
 import com.mealmind.entity.MealItemRow;
+import com.mealmind.enums.Allergen;
 import com.mealmind.enums.SourceMode;
 import com.mealmind.exception.MealException;
 import com.mealmind.mapper.MealMapper;
+import com.mealmind.model.MealFacts;
 import com.mealmind.model.SlotBundle;
 import com.mealmind.util.JsonService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -34,12 +37,20 @@ public class MealService {
         return mealMapper.findPublicMeals().stream().map(this::toMealItem).toList();
     }
 
+    /** Meals by id that this user may see (public ones, and their own personal ones); other ids are silently absent. */
+    public List<MealItem> findAccessibleMeals(List<Long> ids, Long userId) {
+        if (ids == null || ids.isEmpty()) {
+            return List.of();
+        }
+        return mealMapper.findAccessibleByIds(ids, userId).stream().map(this::toMealItem).toList();
+    }
+
     // ---- writes (PERSONAL only) ----
     @Transactional
     public MealItem createPersonalMeal(Long userId, MealRequest request) {
         SlotBundle slots = request.toSlots();
         validateMealRequest(request, slots);
-        MealItemRow row = toRow(null, SourceMode.PERSONAL, userId, request.name(), slots);
+        MealItemRow row = toRow(null, SourceMode.PERSONAL, userId, request.name(), slots, request.toFacts());
         mealMapper.insert(row);                     // useGeneratedKeys fills row.id
         return toMealItem(row);
     }
@@ -48,7 +59,7 @@ public class MealService {
     public MealItem updatePersonalMeal(Long userId, Long mealId, MealRequest request) {
         SlotBundle slots = request.toSlots();
         validateMealRequest(request, slots);
-        MealItemRow row = toRow(mealId, SourceMode.PERSONAL, userId, request.name(), slots);
+        MealItemRow row = toRow(mealId, SourceMode.PERSONAL, userId, request.name(), slots, request.toFacts());
         if (mealMapper.updatePersonal(row) == 0) {
             // 0 rows => not found OR not owned by this user (indistinguishable on purpose)
             throw new MealException("Personal meal not found or not editable");
@@ -64,7 +75,8 @@ public class MealService {
     }
 
     // ---- row <-> domain ----
-    private MealItemRow toRow(Long id, SourceMode sourceMode, Long ownerUserId, String name, SlotBundle slots) {
+    private MealItemRow toRow(Long id, SourceMode sourceMode, Long ownerUserId, String name,
+                              SlotBundle slots, MealFacts facts) {
         MealItemRow row = new MealItemRow();
         row.setId(id);
         row.setSourceType(sourceMode.name());
@@ -77,6 +89,11 @@ public class MealService {
         row.setCuisine(jsonService.toJsonArray(slots.cuisine()));
         row.setTaste(jsonService.toJsonArray(slots.taste()));
         row.setConvenience(jsonService.toJsonArray(slots.convenience()));
+        row.setPrice(facts.price());
+        row.setProteinG(facts.proteinG());
+        row.setCalories(facts.calories());
+        // null stays SQL NULL (unknown); an empty list is stored as [] (known to contain none)
+        row.setAllergens(facts.allergens() == null ? null : jsonService.toJsonArray(facts.allergens()));
         return row;
     }
 
@@ -93,8 +110,25 @@ public class MealService {
         if (slots.mealTime().isEmpty()) {
             throw new MealException("mealTime must contain at least one tag");
         }
+        validateFacts(request.toFacts());
         // TODO (next prompt): call SlotOptionService.validate(slots) to reject any
         // tag not present in the SlotOption dictionary across all seven dimensions.
+    }
+
+    /** Facts are optional, but when present they must be non-negative and allergens must be in the vocabulary. */
+    private void validateFacts(MealFacts facts) {
+        if (facts.price() != null && facts.price().signum() < 0) {
+            throw new MealException("price must not be negative");
+        }
+        if (facts.proteinG() != null && facts.proteinG().signum() < 0) {
+            throw new MealException("proteinG must not be negative");
+        }
+        if (facts.calories() != null && facts.calories() < 0) {
+            throw new MealException("calories must not be negative");
+        }
+        if (facts.allergens() != null) {
+            facts.allergens().forEach(Allergen::fromToken); // throws MealException on unknown tokens
+        }
     }
 
     private MealItem toMealItem(MealItemRow row) {
@@ -110,12 +144,16 @@ public class MealService {
                 jsonService.fromJsonArray(row.getTaste()),
                 jsonService.fromJsonArray(row.getConvenience())
         );
+        // SQL NULL allergens must stay null (unknown); fromJsonArray would turn it into an empty list ("none").
+        List<String> allergens = row.getAllergens() == null ? null : jsonService.fromJsonArray(row.getAllergens());
+        MealFacts facts = new MealFacts(row.getPrice(), row.getProteinG(), row.getCalories(), allergens);
         return new MealItem(
                 row.getId(),
                 SourceMode.valueOf(row.getSourceType()),
                 row.getOwnerUserId(),
                 row.getName(),
                 slots,
+                facts,
                 0d                                 // matchScore: filled by the ranking step later
         );
     }
@@ -123,8 +161,10 @@ public class MealService {
     /**
      * Slot-overlap retrieval (recommendation pipeline layer 1). Recall only:
      * no scoring, no exclude filtering; matchScore stays 0 on every result.
+     * maxPrice / excludeAllergens are hard constraints applied in SQL (fail-closed on unknown values).
      */
-    public List<MealItem> search(SourceMode sourceMode, Long userId, SlotBundle slots) {
+    public List<MealItem> search(SourceMode sourceMode, Long userId, SlotBundle slots,
+                                 BigDecimal maxPrice, List<String> excludeAllergens) {
         SlotBundle safe = slots == null ? SlotBundle.empty() : slots;
         boolean personal = (sourceMode == SourceMode.PERSONAL);
         List<MealItemRow> rows = mealMapper.search(
@@ -137,6 +177,8 @@ public class MealService {
                 jsonService.toJsonArray(safe.cuisine()),
                 jsonService.toJsonArray(safe.taste()),
                 jsonService.toJsonArray(safe.convenience()),
+                maxPrice,
+                jsonService.toJsonArray(excludeAllergens),
                 SEARCH_LIMIT
         );
         return rows.stream().map(this::toMealItem).toList();

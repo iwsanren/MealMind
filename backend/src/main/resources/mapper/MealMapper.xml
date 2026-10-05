@@ -15,6 +15,10 @@
         <result property="cuisine" column="cuisine"/>
         <result property="taste" column="taste"/>
         <result property="convenience" column="convenience"/>
+        <result property="price" column="price"/>
+        <result property="proteinG" column="protein_g"/>
+        <result property="calories" column="calories"/>
+        <result property="allergens" column="allergens"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
@@ -22,6 +26,7 @@
     <sql id="MealColumns">
         id, source_type, owner_user_id, name,
         meal_time, mood, scene, health_goal, cuisine, taste, convenience,
+        price, protein_g, calories, allergens,
         created_at, updated_at
     </sql>
 
@@ -31,10 +36,12 @@
         INSERT INTO meal_item (
         source_type, owner_user_id, name,
         meal_time, mood, scene, health_goal, cuisine, taste, convenience,
+        price, protein_g, calories, allergens,
         created_at, updated_at
         ) VALUES (
         #{sourceType}, #{ownerUserId}, #{name},
         #{mealTime}, #{mood}, #{scene}, #{healthGoal}, #{cuisine}, #{taste}, #{convenience},
+        #{price}, #{proteinG}, #{calories}, #{allergens},
         NOW(), NOW()
         )
     </insert>
@@ -50,6 +57,10 @@
         cuisine = #{cuisine},
         taste = #{taste},
         convenience = #{convenience},
+        price = #{price},
+        protein_g = #{proteinG},
+        calories = #{calories},
+        allergens = #{allergens},
         updated_at = NOW()
         WHERE id = #{id}
         AND source_type = 'PERSONAL'
@@ -85,6 +96,15 @@
         WHERE source_type = 'PUBLIC'
         AND owner_user_id IS NULL
         ORDER BY updated_at DESC
+    </select>
+
+    <select id="findAccessibleByIds" resultMap="MealItemRowMap">
+        SELECT <include refid="MealColumns"/>
+        FROM meal_item
+        WHERE id IN
+        <foreach collection="ids" item="mealId" open="(" separator="," close=")">#{mealId}</foreach>
+        AND ((source_type = 'PUBLIC' AND owner_user_id IS NULL)
+        OR (source_type = 'PERSONAL' AND owner_user_id = #{userId}))
     </select>
 
     <select id="countPersonalMeals" resultType="int">
@@ -126,6 +146,12 @@
             AND (#{cuisineJson} = '[]'     OR JSON_OVERLAPS(cuisine, #{cuisineJson}))
             AND (#{tasteJson} = '[]'       OR JSON_OVERLAPS(taste, #{tasteJson}))
             AND (#{convenienceJson} = '[]' OR JSON_OVERLAPS(convenience, #{convenienceJson}))
+            <!-- Hard constraints, fail-closed: unknown (NULL) price/allergens never pass a constraint that is set. -->
+            <if test="maxPrice != null">
+                AND price IS NOT NULL AND price &lt;= #{maxPrice}
+            </if>
+            AND (#{excludeAllergensJson} = '[]'
+                 OR (allergens IS NOT NULL AND NOT JSON_OVERLAPS(allergens, #{excludeAllergensJson})))
         </where>
         ORDER BY updated_at DESC
         LIMIT #{limit}

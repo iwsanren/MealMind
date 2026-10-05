@@ -18,6 +18,19 @@ export function MealCard({ meal, actions, className = '' }: MealCardProps) {
         {actions && <div className="flex shrink-0 gap-2">{actions}</div>}
       </div>
 
+      <div className="flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-text-secondary">
+        <span>{meal.price != null ? `$${meal.price.toFixed(2)}` : 'Price unknown'}</span>
+        {meal.proteinG != null && <span>{meal.proteinG} g protein</span>}
+        {meal.calories != null && <span>{meal.calories} kcal</span>}
+        <span>
+          {meal.allergens == null
+            ? 'Allergens unknown'
+            : meal.allergens.length === 0
+              ? 'No listed allergens'
+              : `Contains: ${meal.allergens.join(', ')}`}
+        </span>
+      </div>
+
       {dimensionsWithTags.length === 0 ? (
         <span className="text-[13px] text-text-secondary">No tags</span>
       ) : (

@@ -1,5 +1,6 @@
 package com.mealmind.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -18,6 +19,10 @@ public class MealItemRow {
     private String cuisine;
     private String taste;
     private String convenience;
+    private BigDecimal price;         // NULL = unknown
+    private BigDecimal proteinG;      // NULL = unknown
+    private Integer calories;         // NULL = unknown
+    private String allergens;         // JSON array text; SQL NULL = unknown, [] = none
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -107,6 +112,38 @@ public class MealItemRow {
 
     public void setConvenience(String convenience) {
         this.convenience = convenience;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public BigDecimal getProteinG() {
+        return proteinG;
+    }
+
+    public void setProteinG(BigDecimal proteinG) {
+        this.proteinG = proteinG;
+    }
+
+    public Integer getCalories() {
+        return calories;
+    }
+
+    public void setCalories(Integer calories) {
+        this.calories = calories;
+    }
+
+    public String getAllergens() {
+        return allergens;
+    }
+
+    public void setAllergens(String allergens) {
+        this.allergens = allergens;
     }
 
     public LocalDateTime getCreatedAt() {

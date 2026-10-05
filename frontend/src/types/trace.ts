@@ -20,7 +20,8 @@ export interface RequestTraceRow {
   labelNote: string | null
 }
 
-export type ExpectedSlots = Omit<MealRequest, 'name'>
+// Trace labels only describe the seven tag dimensions, not a meal's facts.
+export type ExpectedSlots = Omit<MealRequest, 'name' | 'price' | 'proteinG' | 'calories' | 'allergens'>
 
 export interface TraceLabelRequest {
   expectedIntent: string | null

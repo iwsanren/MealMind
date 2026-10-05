@@ -4,6 +4,7 @@ import com.mealmind.entity.MealItemRow;
 import com.mealmind.enums.SourceMode;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -21,6 +22,9 @@ public interface MealMapper {
 
     List<MealItemRow> findPublicMeals();
 
+    /** Public meals plus this user's own personal meals; ids that match neither are simply absent. */
+    List<MealItemRow> findAccessibleByIds(@Param("ids") List<Long> ids, @Param("userId") Long userId);
+
     int countPersonalMeals(@Param("userId") Long userId);                  // wired now, used by Orchestrator later
 
 
@@ -35,6 +39,8 @@ public interface MealMapper {
             @Param("cuisineJson") String cuisineJson,
             @Param("tasteJson") String tasteJson,
             @Param("convenienceJson") String convenienceJson,
+            @Param("maxPrice") BigDecimal maxPrice,              // null = no budget cap
+            @Param("excludeAllergensJson") String excludeAllergensJson, // "[]" = no allergen filter
             @Param("limit") int limit
     );
 }
