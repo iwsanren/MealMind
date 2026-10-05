@@ -23,6 +23,11 @@ class FeedbackServiceTest {
             inserted.add(row);
             return 1;
         }
+
+        @Override
+        public List<FeedbackRow> findRecentByUser(Long userId, int limit) {
+            return List.of(); // not exercised by these tests
+        }
     }
 
     private final RecordingFeedbackMapper feedbackMapper = new RecordingFeedbackMapper();
