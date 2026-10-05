@@ -1,19 +1,26 @@
+import openai
 from openai import AsyncOpenAI
 
 from app.config import Settings
 
 
 class LlmNotConfigured(Exception):
-    """OPENAI_API_KEY is missing."""
+    """The API key is missing or blank, or the SDK refused to build a client."""
 
 
 def make_client(settings: Settings) -> AsyncOpenAI:
-    if settings.openai_api_key is None:
+    # A blank key ("") is as unusable as a missing one; the SDK would raise its own error for it.
+    if not settings.has_api_key:
         raise LlmNotConfigured
-    return AsyncOpenAI(
-        api_key=settings.openai_api_key.get_secret_value(),
-        base_url=settings.openai_base_url,
-    )
+    try:
+        return AsyncOpenAI(
+            api_key=settings.openai_api_key.get_secret_value(),
+            base_url=settings.openai_base_url,
+            timeout=settings.llm_timeout_s,
+            max_retries=settings.llm_max_retries,
+        )
+    except openai.OpenAIError as e:
+        raise LlmNotConfigured from e
 
 
 async def ping(client: AsyncOpenAI, model: str) -> str:
