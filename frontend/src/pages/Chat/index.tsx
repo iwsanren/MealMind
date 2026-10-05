@@ -1,10 +1,7 @@
-import { useEffect, useState } from 'react'
-import { getPersonalMeals, getPublicMeals, getSlotOptions } from '../../api/meals'
-import { createSession } from '../../api/session'
+import { useState } from 'react'
+import { createSession, recommend } from '../../api/session'
 import { Button } from '../../components/Button'
 import { ApiError } from '../../lib/apiClient'
-import { mockChatReply } from '../../lib/mockChatReply'
-import type { MealResponse, SlotOptionsMap } from '../../types/meal'
 import { ChatMessage, type ChatMessageData } from './ChatMessage'
 import { QuickReplies } from './QuickReplies'
 
@@ -23,40 +20,11 @@ function greeting(sourceMode: SourceMode): ChatMessageData {
 
 export function ChatPage() {
   const [sourceMode, setSourceMode] = useState<SourceMode>('PUBLIC')
-  const [candidateMeals, setCandidateMeals] = useState<MealResponse[]>([])
-  const [slotOptions, setSlotOptions] = useState<SlotOptionsMap | null>(null)
-  const [loadError, setLoadError] = useState<string | null>(null)
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [messages, setMessages] = useState<ChatMessageData[]>(() => [greeting('PUBLIC')])
   const [inputText, setInputText] = useState('')
   const [sending, setSending] = useState(false)
   const [sendError, setSendError] = useState<string | null>(null)
-
-  useEffect(() => {
-    getSlotOptions()
-      .then(setSlotOptions)
-      .catch(() => setSlotOptions(null))
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-    setLoadError(null)
-
-    const request = sourceMode === 'PUBLIC' ? getPublicMeals() : getPersonalMeals()
-    request
-      .then((meals) => {
-        if (!cancelled) setCandidateMeals(meals)
-      })
-      .catch((err: unknown) => {
-        if (cancelled) return
-        setCandidateMeals([])
-        setLoadError(err instanceof ApiError ? err.message : 'Failed to load candidate meals.')
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [sourceMode])
 
   function switchSource(next: SourceMode) {
     if (next === sourceMode) return
@@ -89,10 +57,18 @@ export function ChatPage() {
         setSessionId(created.sessionId)
       }
 
-      const reply = mockChatReply(text, candidateMeals, slotOptions ?? ({} as SlotOptionsMap))
+      const reply = await recommend(activeSessionId, text)
       setMessages((prev) => [
         ...prev,
-        { id: crypto.randomUUID(), role: 'assistant', text: reply.text, meals: reply.meals },
+        {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          text: reply.text,
+          meals: reply.meals,
+          source: reply.source,
+          fallbackReason: reply.fallbackReason,
+          traceId: reply.traceId,
+        },
       ])
     } catch (err) {
       setSendError(err instanceof ApiError ? err.message : 'Failed to send message.')
@@ -109,15 +85,9 @@ export function ChatPage() {
       </header>
 
       <div className="rounded border border-border bg-accent-subtle p-3 text-[13px] text-text-primary">
-        Recommendations are simulated for now — matched by keyword against your real meal library. Real AI
-        matching arrives with the agent backend.
+        Answers come from the AI agent when it is switched on, and from simple rule-based matching otherwise (or
+        if the agent is unavailable). Each answer says which one produced it.
       </div>
-
-      {loadError && (
-        <div className="rounded border border-danger bg-danger-subtle p-3 text-[13px] text-danger">
-          {loadError}
-        </div>
-      )}
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex gap-2">
@@ -148,6 +118,12 @@ export function ChatPage() {
               <ChatMessage key={message.id} message={message} sessionId={sessionId} />
             ))}
           </div>
+
+          {sending && (
+            <div className="text-[13px] text-text-secondary">
+              Thinking… the AI agent can take 10–20 seconds.
+            </div>
+          )}
 
           {sendError && <div className="text-[13px] text-danger">{sendError}</div>}
 

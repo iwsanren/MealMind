@@ -1,0 +1,527 @@
+{
+  "meta": {
+    "stamp": "20261005-171008",
+    "model": "gpt-4o-mini",
+    "temperature": 0.0,
+    "agent_prompt": "v5",
+    "baseline_prompt": "v1",
+    "n_cases": 4,
+    "repeats": 1,
+    "arms": [
+      "A",
+      "B",
+      "C"
+    ],
+    "spent_usd": 0.016233,
+    "estimate": {
+      "model": "gpt-4o-mini",
+      "arms": {
+        "A": {
+          "runs": 4,
+          "input_tokens_per_run": 3950,
+          "output_tokens_per_run": 350,
+          "estimated_usd": 0.0032
+        },
+        "B": {
+          "runs": 4,
+          "input_tokens_per_run": 5530,
+          "output_tokens_per_run": 450,
+          "estimated_usd": 0.0044
+        },
+        "C": {
+          "runs": 4,
+          "input_tokens_per_run": 8000,
+          "output_tokens_per_run": 500,
+          "estimated_usd": 0.006
+        }
+      },
+      "estimated_total_usd": 0.0136
+    },
+    "data": "synthetic (evaluation/build_dataset.py)"
+  },
+  "summary": {
+    "arms": {
+      "A": {
+        "name": "baseline (one call, whole menu)",
+        "runs": 4,
+        "shown": {
+          "k": 4,
+          "n": 4,
+          "rate": 1.0,
+          "ci95": [
+            0.5101,
+            1.0
+          ]
+        },
+        "no_answer": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "unsafe": {
+          "k": 1,
+          "n": 4,
+          "rate": 0.25,
+          "ci95": [
+            0.0456,
+            0.6994
+          ]
+        },
+        "hard_violation": {
+          "k": 1,
+          "n": 4,
+          "rate": 0.25,
+          "ci95": [
+            0.0456,
+            0.6994
+          ]
+        },
+        "claim_fail": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "hallucinated_dish": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "false_no_match": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "correct_outcome": {
+          "k": 3,
+          "n": 4,
+          "rate": 0.75,
+          "ci95": [
+            0.3006,
+            0.9544
+          ]
+        },
+        "disliked_shown": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "off_meal_time_of_recommended": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.5615
+          ]
+        },
+        "claims_failed_of_checkable": {
+          "failed": 0,
+          "checkable": 8
+        },
+        "recommended_runs": 3,
+        "avg_llm_calls": 1.0,
+        "avg_prompt_tokens": 4791.75,
+        "avg_completion_tokens": 224.0,
+        "avg_cost_usd": 0.000853,
+        "total_cost_usd": 0.003412,
+        "latency_ms_p50": 3913,
+        "latency_ms_p95": 4210,
+        "statuses": {
+          "SUCCESS": 4
+        }
+      },
+      "B": {
+        "name": "baseline + verification (oracle constraints)",
+        "runs": 4,
+        "shown": {
+          "k": 4,
+          "n": 4,
+          "rate": 1.0,
+          "ci95": [
+            0.5101,
+            1.0
+          ]
+        },
+        "no_answer": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "unsafe": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "hard_violation": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "claim_fail": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "hallucinated_dish": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "false_no_match": {
+          "k": 1,
+          "n": 4,
+          "rate": 0.25,
+          "ci95": [
+            0.0456,
+            0.6994
+          ]
+        },
+        "correct_outcome": {
+          "k": 3,
+          "n": 4,
+          "rate": 0.75,
+          "ci95": [
+            0.3006,
+            0.9544
+          ]
+        },
+        "disliked_shown": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "off_meal_time_of_recommended": {
+          "k": 0,
+          "n": 2,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.6576
+          ]
+        },
+        "claims_failed_of_checkable": {
+          "failed": 0,
+          "checkable": 8
+        },
+        "recommended_runs": 2,
+        "avg_llm_calls": 1.25,
+        "avg_prompt_tokens": 6099.0,
+        "avg_completion_tokens": 278.25,
+        "avg_cost_usd": 0.00108175,
+        "total_cost_usd": 0.004327,
+        "latency_ms_p50": 3700,
+        "latency_ms_p95": 5162,
+        "statuses": {
+          "SUCCESS": 4
+        }
+      },
+      "C": {
+        "name": "agent (tools + verification)",
+        "runs": 4,
+        "shown": {
+          "k": 4,
+          "n": 4,
+          "rate": 1.0,
+          "ci95": [
+            0.5101,
+            1.0
+          ]
+        },
+        "no_answer": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "unsafe": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "hard_violation": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "claim_fail": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "hallucinated_dish": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "false_no_match": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "correct_outcome": {
+          "k": 4,
+          "n": 4,
+          "rate": 1.0,
+          "ci95": [
+            0.5101,
+            1.0
+          ]
+        },
+        "disliked_shown": {
+          "k": 0,
+          "n": 4,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.4899
+          ]
+        },
+        "off_meal_time_of_recommended": {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.5615
+          ]
+        },
+        "claims_failed_of_checkable": {
+          "failed": 0,
+          "checkable": 11
+        },
+        "recommended_runs": 3,
+        "avg_llm_calls": 3.75,
+        "avg_prompt_tokens": 12639.75,
+        "avg_completion_tokens": 378.75,
+        "avg_cost_usd": 0.002123,
+        "total_cost_usd": 0.008492,
+        "latency_ms_p50": 9500,
+        "latency_ms_p95": 12775,
+        "statuses": {
+          "SUCCESS": 4
+        }
+      }
+    },
+    "paired": {
+      "A-C:unsafe": {
+        "cases": 4,
+        "mean_diff": 0.25,
+        "bootstrap_ci95": [
+          0.0,
+          0.75
+        ],
+        "left_higher": 1,
+        "right_higher": 0,
+        "equal": 3
+      },
+      "A-C:correct_outcome": {
+        "cases": 4,
+        "mean_diff": -0.25,
+        "bootstrap_ci95": [
+          -0.75,
+          0.0
+        ],
+        "left_higher": 0,
+        "right_higher": 1,
+        "equal": 3
+      },
+      "A-B:unsafe": {
+        "cases": 4,
+        "mean_diff": 0.25,
+        "bootstrap_ci95": [
+          0.0,
+          0.75
+        ],
+        "left_higher": 1,
+        "right_higher": 0,
+        "equal": 3
+      },
+      "A-B:correct_outcome": {
+        "cases": 4,
+        "mean_diff": 0.0,
+        "bootstrap_ci95": [
+          0.0,
+          0.0
+        ],
+        "left_higher": 0,
+        "right_higher": 0,
+        "equal": 4
+      },
+      "B-C:unsafe": {
+        "cases": 4,
+        "mean_diff": 0.0,
+        "bootstrap_ci95": [
+          0.0,
+          0.0
+        ],
+        "left_higher": 0,
+        "right_higher": 0,
+        "equal": 4
+      },
+      "B-C:correct_outcome": {
+        "cases": 4,
+        "mean_diff": -0.25,
+        "bootstrap_ci95": [
+          -0.75,
+          0.0
+        ],
+        "left_higher": 0,
+        "right_higher": 1,
+        "equal": 3
+      }
+    },
+    "by_category": {
+      "A": {
+        "budget": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 1
+        },
+        "dislike": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 1
+        },
+        "high_protein": {
+          "runs": 1,
+          "unsafe": 1,
+          "correct_outcome": 0
+        },
+        "unknown_trap": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 1
+        }
+      },
+      "B": {
+        "budget": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 1
+        },
+        "dislike": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 1
+        },
+        "high_protein": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 0
+        },
+        "unknown_trap": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 1
+        }
+      },
+      "C": {
+        "budget": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 1
+        },
+        "dislike": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 1
+        },
+        "high_protein": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 1
+        },
+        "unknown_trap": {
+          "runs": 1,
+          "unsafe": 0,
+          "correct_outcome": 1
+        }
+      }
+    }
+  },
+  "guard": {
+    "blocked_case_ids": [
+      "m1",
+      "m2",
+      "m3",
+      "t1",
+      "t2",
+      "t3"
+    ],
+    "medical_blocked": "3/3",
+    "false_positives": [
+      "t1",
+      "t2",
+      "t3"
+    ],
+    "false_negatives": [],
+    "benign_treat_blocked": "3/3"
+  }
+}

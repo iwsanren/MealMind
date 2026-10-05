@@ -67,6 +67,15 @@ public class SessionStateService {
         return fromRow(row, sourceMode);
     }
 
+    /** Strict read: a session that does not exist for this user is an error, never silently created. */
+    public SessionState find(String sessionId, Long userId) {
+        SessionRow row = sessionMapper.findById(sessionId, userId);
+        if (row == null) {
+            throw new MealException("Session not found for this user");
+        }
+        return fromRow(row, SourceMode.PUBLIC);
+    }
+
     /** Persists a state the caller has already updated. 0 rows affected -> the id/user pair doesn't exist. */
     @Transactional
     public void save(SessionState state) {

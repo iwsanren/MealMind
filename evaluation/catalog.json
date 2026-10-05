@@ -1,0 +1,1371 @@
+[
+ {
+  "id": 1,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Grilled Chicken Bowl",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Work",
+   "Post-Workout"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Balanced"
+  ],
+  "cuisine": [
+   "Healthy Food"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Quick",
+   "Single Serving"
+  ],
+  "price": 12.5,
+  "proteinG": 38.0,
+  "calories": 520,
+  "allergens": [
+   "milk"
+  ]
+ },
+ {
+  "id": 2,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Garlic Shrimp Stir-Fry",
+  "mealTime": [
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Low Carb"
+  ],
+  "cuisine": [
+   "Chinese"
+  ],
+  "taste": [
+   "Garlicky",
+   "Savory"
+  ],
+  "convenience": [
+   "Quick"
+  ],
+  "price": 14.0,
+  "proteinG": 30.0,
+  "calories": 480,
+  "allergens": [
+   "shellfish",
+   "soy"
+  ]
+ },
+ {
+  "id": 3,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Steak and Greens",
+  "mealTime": [
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Weekend",
+   "Post-Workout"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Muscle Gain",
+   "Low Carb"
+  ],
+  "cuisine": [
+   "American"
+  ],
+  "taste": [
+   "Savory",
+   "Smoky"
+  ],
+  "convenience": [
+   "Leisurely"
+  ],
+  "price": 24.0,
+  "proteinG": 46.0,
+  "calories": 650,
+  "allergens": []
+ },
+ {
+  "id": 4,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Salmon Poke Bowl",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Work"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Balanced"
+  ],
+  "cuisine": [
+   "Japanese",
+   "Healthy Food"
+  ],
+  "taste": [
+   "Umami"
+  ],
+  "convenience": [
+   "Quick"
+  ],
+  "price": 15.0,
+  "proteinG": 29.0,
+  "calories": 510,
+  "allergens": [
+   "fish",
+   "soy",
+   "sesame"
+  ]
+ },
+ {
+  "id": 5,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Tofu Veggie Scramble",
+  "mealTime": [
+   "Breakfast",
+   "Brunch"
+  ],
+  "mood": [],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Light"
+  ],
+  "cuisine": [
+   "Vegetarian",
+   "Healthy Food"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Quick"
+  ],
+  "price": 9.5,
+  "proteinG": 21.0,
+  "calories": 380,
+  "allergens": [
+   "soy"
+  ]
+ },
+ {
+  "id": 6,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Turkey Club Sandwich",
+  "mealTime": [
+   "Lunch"
+  ],
+  "mood": [],
+  "scene": [
+   "Work",
+   "Commute"
+  ],
+  "healthGoal": [
+   "High Protein"
+  ],
+  "cuisine": [
+   "American"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Eat on the Go",
+   "Quick"
+  ],
+  "price": 11.0,
+  "proteinG": 27.0,
+  "calories": 640,
+  "allergens": [
+   "wheat",
+   "egg"
+  ]
+ },
+ {
+  "id": 7,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Egg White Omelette",
+  "mealTime": [
+   "Breakfast",
+   "Brunch"
+  ],
+  "mood": [],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Low Carb",
+   "Light"
+  ],
+  "cuisine": [
+   "Western"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Quick"
+  ],
+  "price": 8.0,
+  "proteinG": 24.0,
+  "calories": 290,
+  "allergens": [
+   "egg",
+   "milk"
+  ]
+ },
+ {
+  "id": 8,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Lentil Curry",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "Balanced",
+   "Warming"
+  ],
+  "cuisine": [
+   "Indian",
+   "Vegetarian"
+  ],
+  "taste": [
+   "Curry",
+   "Medium Spicy"
+  ],
+  "convenience": [
+   "Meal-Prep Friendly"
+  ],
+  "price": 10.5,
+  "proteinG": 18.0,
+  "calories": 450,
+  "allergens": []
+ },
+ {
+  "id": 9,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Beef Burrito Bowl",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Post-Workout"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Energy Boost"
+  ],
+  "cuisine": [
+   "Mexican"
+  ],
+  "taste": [
+   "Savory",
+   "Mild Spicy"
+  ],
+  "convenience": [
+   "Easy Takeout"
+  ],
+  "price": 13.0,
+  "proteinG": 33.0,
+  "calories": 720,
+  "allergens": [
+   "milk"
+  ]
+ },
+ {
+  "id": 10,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Crab Cake Plate",
+  "mealTime": [
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Weekend"
+  ],
+  "healthGoal": [],
+  "cuisine": [
+   "Seafood"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Comfortable Dine-In"
+  ],
+  "price": 18.0,
+  "proteinG": 26.0,
+  "calories": 560,
+  "allergens": [
+   "shellfish",
+   "egg",
+   "wheat"
+  ]
+ },
+ {
+  "id": 11,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Clam Chowder Bread Bowl",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [
+   "Feeling Down",
+   "Tired"
+  ],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "Warming"
+  ],
+  "cuisine": [
+   "Soup & Congee",
+   "Seafood"
+  ],
+  "taste": [
+   "Creamy"
+  ],
+  "convenience": [
+   "Comfortable Dine-In"
+  ],
+  "price": 11.5,
+  "proteinG": 16.0,
+  "calories": 690,
+  "allergens": [
+   "shellfish",
+   "milk",
+   "wheat"
+  ]
+ },
+ {
+  "id": 12,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Pad Thai",
+  "mealTime": [
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [],
+  "healthGoal": [
+   "Energy Boost"
+  ],
+  "cuisine": [
+   "Thai",
+   "Noodles",
+   "Street Food"
+  ],
+  "taste": [
+   "Sweet and Sour"
+  ],
+  "convenience": [
+   "Easy Takeout"
+  ],
+  "price": 12.0,
+  "proteinG": 20.0,
+  "calories": 780,
+  "allergens": [
+   "peanut",
+   "egg",
+   "soy",
+   "wheat"
+  ]
+ },
+ {
+  "id": 13,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Chicken Satay Skewers",
+  "mealTime": [
+   "Dinner",
+   "Snack"
+  ],
+  "mood": [],
+  "scene": [
+   "Group Meal"
+  ],
+  "healthGoal": [
+   "High Protein"
+  ],
+  "cuisine": [
+   "Thai",
+   "Southeast Asian"
+  ],
+  "taste": [
+   "Savory Sauce"
+  ],
+  "convenience": [
+   "Sharing"
+  ],
+  "price": 10.0,
+  "proteinG": 28.0,
+  "calories": 420,
+  "allergens": [
+   "peanut",
+   "soy"
+  ]
+ },
+ {
+  "id": 14,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Almond Granola Parfait",
+  "mealTime": [
+   "Breakfast",
+   "Snack"
+  ],
+  "mood": [],
+  "scene": [
+   "Commute"
+  ],
+  "healthGoal": [
+   "Light"
+  ],
+  "cuisine": [
+   "Healthy Food"
+  ],
+  "taste": [
+   "Sweet"
+  ],
+  "convenience": [
+   "Eat on the Go",
+   "Quick"
+  ],
+  "price": 7.0,
+  "proteinG": 11.0,
+  "calories": 380,
+  "allergens": [
+   "milk",
+   "tree_nut"
+  ]
+ },
+ {
+  "id": 15,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Overnight Oats with Berries",
+  "mealTime": [
+   "Breakfast",
+   "Brunch"
+  ],
+  "mood": [
+   "Tired",
+   "Calm"
+  ],
+  "scene": [
+   "Home",
+   "Commute"
+  ],
+  "healthGoal": [
+   "Light",
+   "Low Sugar",
+   "Balanced"
+  ],
+  "cuisine": [
+   "Healthy Food"
+  ],
+  "taste": [
+   "Sweet",
+   "Creamy"
+  ],
+  "convenience": [
+   "Meal-Prep Friendly"
+  ],
+  "price": 6.5,
+  "proteinG": 12.0,
+  "calories": 340,
+  "allergens": [
+   "milk"
+  ]
+ },
+ {
+  "id": 16,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Avocado Toast",
+  "mealTime": [
+   "Breakfast",
+   "Brunch"
+  ],
+  "mood": [],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "Light",
+   "Balanced"
+  ],
+  "cuisine": [
+   "Healthy Food"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Quick"
+  ],
+  "price": 8.5,
+  "proteinG": 9.0,
+  "calories": 330,
+  "allergens": [
+   "wheat"
+  ]
+ },
+ {
+  "id": 17,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Protein Smoothie",
+  "mealTime": [
+   "Snack",
+   "Breakfast"
+  ],
+  "mood": [],
+  "scene": [
+   "Post-Workout",
+   "Commute"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Light"
+  ],
+  "cuisine": [
+   "Healthy Food"
+  ],
+  "taste": [
+   "Sweet"
+  ],
+  "convenience": [
+   "Eat on the Go"
+  ],
+  "price": 6.0,
+  "proteinG": 8.0,
+  "calories": 250,
+  "allergens": [
+   "milk"
+  ]
+ },
+ {
+  "id": 18,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Veggie Buddha Bowl",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Work"
+  ],
+  "healthGoal": [
+   "Light",
+   "Balanced"
+  ],
+  "cuisine": [
+   "Vegetarian",
+   "Healthy Food"
+  ],
+  "taste": [
+   "Umami"
+  ],
+  "convenience": [
+   "Single Serving"
+  ],
+  "price": 11.0,
+  "proteinG": 14.0,
+  "calories": 480,
+  "allergens": [
+   "sesame"
+  ]
+ },
+ {
+  "id": 19,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Classic Cheeseburger with Fries",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [
+   "Happy",
+   "Want to Treat Myself"
+  ],
+  "scene": [
+   "Weekend"
+  ],
+  "healthGoal": [
+   "Energy Boost"
+  ],
+  "cuisine": [
+   "American",
+   "Fast Food"
+  ],
+  "taste": [
+   "Savory",
+   "Rich and Oily"
+  ],
+  "convenience": [
+   "Easy Takeout"
+  ],
+  "price": 11.0,
+  "proteinG": 28.0,
+  "calories": 980,
+  "allergens": [
+   "milk",
+   "wheat",
+   "sesame",
+   "soy"
+  ]
+ },
+ {
+  "id": 20,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Margherita Pizza",
+  "mealTime": [
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Group Meal",
+   "Weekend"
+  ],
+  "healthGoal": [
+   "Balanced"
+  ],
+  "cuisine": [
+   "Italian"
+  ],
+  "taste": [
+   "Tomato",
+   "Savory"
+  ],
+  "convenience": [
+   "Sharing"
+  ],
+  "price": 13.0,
+  "proteinG": 22.0,
+  "calories": 780,
+  "allergens": [
+   "milk",
+   "wheat"
+  ]
+ },
+ {
+  "id": 21,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Chocolate Lava Cake",
+  "mealTime": [
+   "Afternoon Tea",
+   "Snack",
+   "Late-Night Snack"
+  ],
+  "mood": [
+   "Want to Treat Myself",
+   "Happy"
+  ],
+  "scene": [
+   "Alone Time"
+  ],
+  "healthGoal": [],
+  "cuisine": [
+   "Dessert"
+  ],
+  "taste": [
+   "Sweet"
+  ],
+  "convenience": [
+   "Quick"
+  ],
+  "price": 7.5,
+  "proteinG": 5.0,
+  "calories": 520,
+  "allergens": [
+   "milk",
+   "egg",
+   "wheat"
+  ]
+ },
+ {
+  "id": 22,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Loaded Nachos",
+  "mealTime": [
+   "Late-Night Snack",
+   "Snack"
+  ],
+  "mood": [
+   "Want to Treat Myself",
+   "Happy"
+  ],
+  "scene": [
+   "Group Meal"
+  ],
+  "healthGoal": [],
+  "cuisine": [
+   "Mexican",
+   "Street Food"
+  ],
+  "taste": [
+   "Mild Spicy",
+   "Rich and Oily"
+  ],
+  "convenience": [
+   "Sharing"
+  ],
+  "price": 9.5,
+  "proteinG": 14.0,
+  "calories": 850,
+  "allergens": [
+   "milk"
+  ]
+ },
+ {
+  "id": 23,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Chicken Noodle Soup",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [
+   "Feeling Down",
+   "Tired",
+   "No Appetite"
+  ],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "Easy to Digest",
+   "Warming",
+   "Stomach-Friendly"
+  ],
+  "cuisine": [
+   "Soup & Congee",
+   "Noodles"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Quick"
+  ],
+  "price": 7.5,
+  "proteinG": 19.0,
+  "calories": 320,
+  "allergens": [
+   "wheat",
+   "egg"
+  ]
+ },
+ {
+  "id": 24,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Congee with Egg",
+  "mealTime": [
+   "Breakfast"
+  ],
+  "mood": [
+   "Tired",
+   "No Appetite"
+  ],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "Easy to Digest",
+   "Stomach-Friendly",
+   "Warming"
+  ],
+  "cuisine": [
+   "Chinese",
+   "Soup & Congee"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [],
+  "price": 6.0,
+  "proteinG": 11.0,
+  "calories": 280,
+  "allergens": [
+   "egg"
+  ]
+ },
+ {
+  "id": 25,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Green Salad",
+  "mealTime": [
+   "Lunch"
+  ],
+  "mood": [],
+  "scene": [
+   "Work"
+  ],
+  "healthGoal": [
+   "Light",
+   "Low Oil",
+   "Fat Loss"
+  ],
+  "cuisine": [
+   "Healthy Food",
+   "Vegetarian"
+  ],
+  "taste": [
+   "Tomato"
+  ],
+  "convenience": [
+   "Quick",
+   "Eat on the Go"
+  ],
+  "price": 6.5,
+  "proteinG": 4.0,
+  "calories": 150,
+  "allergens": []
+ },
+ {
+  "id": 26,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Quinoa Veggie Salad",
+  "mealTime": [
+   "Lunch"
+  ],
+  "mood": [],
+  "scene": [
+   "Work"
+  ],
+  "healthGoal": [
+   "Light",
+   "Balanced",
+   "Fat Loss"
+  ],
+  "cuisine": [
+   "Healthy Food",
+   "Vegetarian",
+   "Mediterranean"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Meal-Prep Friendly"
+  ],
+  "price": 10.0,
+  "proteinG": 10.0,
+  "calories": 410,
+  "allergens": []
+ },
+ {
+  "id": 27,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Hummus Plate",
+  "mealTime": [
+   "Snack",
+   "Lunch"
+  ],
+  "mood": [],
+  "scene": [
+   "Alone Time"
+  ],
+  "healthGoal": [
+   "Light"
+  ],
+  "cuisine": [
+   "Middle Eastern",
+   "Mediterranean"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Minimal Utensils"
+  ],
+  "price": 8.0,
+  "proteinG": 9.9,
+  "calories": 360,
+  "allergens": [
+   "sesame"
+  ]
+ },
+ {
+  "id": 28,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Falafel Wrap",
+  "mealTime": [
+   "Lunch"
+  ],
+  "mood": [],
+  "scene": [
+   "Commute"
+  ],
+  "healthGoal": [
+   "Balanced"
+  ],
+  "cuisine": [
+   "Middle Eastern",
+   "Vegetarian"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Eat on the Go"
+  ],
+  "price": 9.5,
+  "proteinG": 15.0,
+  "calories": 560,
+  "allergens": [
+   "wheat",
+   "sesame"
+  ]
+ },
+ {
+  "id": 29,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Vegan Tofu Ramen",
+  "mealTime": [
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "Warming"
+  ],
+  "cuisine": [
+   "Japanese",
+   "Noodles",
+   "Vegetarian"
+  ],
+  "taste": [
+   "Umami"
+  ],
+  "convenience": [
+   "Comfortable Dine-In"
+  ],
+  "price": 12.5,
+  "proteinG": 17.0,
+  "calories": 590,
+  "allergens": [
+   "soy",
+   "wheat",
+   "sesame"
+  ]
+ },
+ {
+  "id": 30,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Grilled Chicken Caesar Salad",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Work",
+   "Post-Workout"
+  ],
+  "healthGoal": [
+   "Fat Loss",
+   "High Protein",
+   "Low Carb",
+   "Balanced"
+  ],
+  "cuisine": [
+   "Healthy Food",
+   "Western"
+  ],
+  "taste": [
+   "Savory",
+   "Garlicky"
+  ],
+  "convenience": [
+   "Quick",
+   "Single Serving"
+  ],
+  "price": 12.5,
+  "proteinG": 38.0,
+  "calories": 520,
+  "allergens": [
+   "milk",
+   "egg",
+   "fish",
+   "wheat"
+  ]
+ },
+ {
+  "id": 31,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Pulled Pork Sandwich",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Weekend"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Energy Boost"
+  ],
+  "cuisine": [
+   "BBQ",
+   "American"
+  ],
+  "taste": [
+   "Smoky"
+  ],
+  "convenience": [
+   "Easy Takeout"
+  ],
+  "price": 10.5,
+  "proteinG": 30.0,
+  "calories": 700,
+  "allergens": [
+   "wheat"
+  ]
+ },
+ {
+  "id": 32,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Shrimp Tacos",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Group Meal"
+  ],
+  "healthGoal": [
+   "Balanced"
+  ],
+  "cuisine": [
+   "Mexican",
+   "Seafood"
+  ],
+  "taste": [
+   "Medium Spicy"
+  ],
+  "convenience": [
+   "Sharing"
+  ],
+  "price": 11.5,
+  "proteinG": 22.0,
+  "calories": 520,
+  "allergens": [
+   "shellfish",
+   "wheat"
+  ]
+ },
+ {
+  "id": 33,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Mystery Daily Special",
+  "mealTime": [
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [],
+  "cuisine": [
+   "American"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [],
+  "price": null,
+  "proteinG": null,
+  "calories": null,
+  "allergens": null
+ },
+ {
+  "id": 34,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "House Special Bowl",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Work"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Balanced"
+  ],
+  "cuisine": [
+   "Healthy Food"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Quick"
+  ],
+  "price": 9.0,
+  "proteinG": 25.0,
+  "calories": 500,
+  "allergens": null
+ },
+ {
+  "id": 35,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Chef's Soup of the Day",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [
+   "Tired"
+  ],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "Warming",
+   "Light"
+  ],
+  "cuisine": [
+   "Soup & Congee"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [],
+  "price": null,
+  "proteinG": 12.0,
+  "calories": 300,
+  "allergens": []
+ },
+ {
+  "id": 36,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Rice and Beans",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Home"
+  ],
+  "healthGoal": [
+   "Balanced"
+  ],
+  "cuisine": [
+   "Home-Style",
+   "Mexican"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Quick"
+  ],
+  "price": 4.5,
+  "proteinG": 12.0,
+  "calories": 520,
+  "allergens": []
+ },
+ {
+  "id": 37,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Instant Ramen Cup",
+  "mealTime": [
+   "Late-Night Snack",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Working Overtime"
+  ],
+  "healthGoal": [],
+  "cuisine": [
+   "Noodles",
+   "Fast Food"
+  ],
+  "taste": [
+   "Savory"
+  ],
+  "convenience": [
+   "Quick",
+   "Minimal Utensils"
+  ],
+  "price": 3.0,
+  "proteinG": 8.0,
+  "calories": 420,
+  "allergens": [
+   "wheat",
+   "soy"
+  ]
+ },
+ {
+  "id": 38,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Peanut Butter Banana Toast",
+  "mealTime": [
+   "Breakfast",
+   "Snack"
+  ],
+  "mood": [],
+  "scene": [
+   "Commute"
+  ],
+  "healthGoal": [
+   "Energy Boost"
+  ],
+  "cuisine": [
+   "American"
+  ],
+  "taste": [
+   "Sweet"
+  ],
+  "convenience": [
+   "Quick"
+  ],
+  "price": 5.0,
+  "proteinG": 11.0,
+  "calories": 390,
+  "allergens": [
+   "peanut",
+   "wheat"
+  ]
+ },
+ {
+  "id": 39,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Mixed Nuts Energy Bar",
+  "mealTime": [
+   "Snack"
+  ],
+  "mood": [],
+  "scene": [
+   "Commute",
+   "Travel"
+  ],
+  "healthGoal": [
+   "Energy Boost"
+  ],
+  "cuisine": [
+   "Healthy Food"
+  ],
+  "taste": [
+   "Sweet"
+  ],
+  "convenience": [
+   "Eat on the Go"
+  ],
+  "price": 4.0,
+  "proteinG": 7.0,
+  "calories": 280,
+  "allergens": [
+   "tree_nut",
+   "peanut"
+  ]
+ },
+ {
+  "id": 40,
+  "sourceType": "PUBLIC",
+  "ownerUserId": null,
+  "name": "Seared Tuna Salad",
+  "mealTime": [
+   "Lunch",
+   "Dinner"
+  ],
+  "mood": [],
+  "scene": [
+   "Work"
+  ],
+  "healthGoal": [
+   "High Protein",
+   "Low Carb",
+   "Fat Loss"
+  ],
+  "cuisine": [
+   "Japanese",
+   "Healthy Food"
+  ],
+  "taste": [
+   "Umami"
+  ],
+  "convenience": [
+   "Single Serving"
+  ],
+  "price": 16.0,
+  "proteinG": 35.0,
+  "calories": 430,
+  "allergens": [
+   "fish",
+   "sesame"
+  ]
+ }
+]

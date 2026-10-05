@@ -1,0 +1,574 @@
+{
+  "meta": {
+    "stamp": "20261005-171415",
+    "model": "gpt-4o-mini",
+    "temperature": 0.0,
+    "agent_prompt": "v5",
+    "baseline_prompt": "v1",
+    "n_cases": 34,
+    "repeats": 3,
+    "arms": [
+      "A",
+      "B",
+      "C"
+    ],
+    "spent_usd": 0.459367,
+    "estimate": {
+      "model": "gpt-4o-mini",
+      "arms": {
+        "A": {
+          "runs": 102,
+          "input_tokens_per_run": 3950,
+          "output_tokens_per_run": 350,
+          "estimated_usd": 0.0819
+        },
+        "B": {
+          "runs": 102,
+          "input_tokens_per_run": 5530,
+          "output_tokens_per_run": 450,
+          "estimated_usd": 0.1121
+        },
+        "C": {
+          "runs": 102,
+          "input_tokens_per_run": 8000,
+          "output_tokens_per_run": 500,
+          "estimated_usd": 0.153
+        }
+      },
+      "estimated_total_usd": 0.347
+    },
+    "data": "synthetic (evaluation/build_dataset.py)"
+  },
+  "summary": {
+    "arms": {
+      "A": {
+        "name": "baseline (one call, whole menu)",
+        "runs": 102,
+        "shown": {
+          "k": 102,
+          "n": 102,
+          "rate": 1.0,
+          "ci95": [
+            0.9637,
+            1.0
+          ]
+        },
+        "no_answer": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "unsafe": {
+          "k": 31,
+          "n": 102,
+          "rate": 0.30392156862745096,
+          "ci95": [
+            0.2231,
+            0.399
+          ]
+        },
+        "hard_violation": {
+          "k": 27,
+          "n": 102,
+          "rate": 0.2647058823529412,
+          "ci95": [
+            0.1888,
+            0.3577
+          ]
+        },
+        "claim_fail": {
+          "k": 12,
+          "n": 102,
+          "rate": 0.11764705882352941,
+          "ci95": [
+            0.0686,
+            0.1945
+          ]
+        },
+        "hallucinated_dish": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "false_no_match": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "correct_outcome": {
+          "k": 71,
+          "n": 102,
+          "rate": 0.696078431372549,
+          "ci95": [
+            0.601,
+            0.7769
+          ]
+        },
+        "disliked_shown": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "off_meal_time_of_recommended": {
+          "k": 0,
+          "n": 81,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0453
+          ]
+        },
+        "claims_failed_of_checkable": {
+          "failed": 12,
+          "checkable": 220
+        },
+        "recommended_runs": 81,
+        "avg_llm_calls": 1.0,
+        "avg_prompt_tokens": 4785.35294117647,
+        "avg_completion_tokens": 221.94117647058823,
+        "avg_cost_usd": 0.0008509509803921568,
+        "total_cost_usd": 0.086797,
+        "latency_ms_p50": 3303,
+        "latency_ms_p95": 47538,
+        "statuses": {
+          "SUCCESS": 102
+        }
+      },
+      "B": {
+        "name": "baseline + verification (oracle constraints)",
+        "runs": 102,
+        "shown": {
+          "k": 101,
+          "n": 102,
+          "rate": 0.9901960784313726,
+          "ci95": [
+            0.9465,
+            0.9983
+          ]
+        },
+        "no_answer": {
+          "k": 1,
+          "n": 102,
+          "rate": 0.00980392156862745,
+          "ci95": [
+            0.0017,
+            0.0535
+          ]
+        },
+        "unsafe": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "hard_violation": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "claim_fail": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "hallucinated_dish": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "false_no_match": {
+          "k": 25,
+          "n": 102,
+          "rate": 0.24509803921568626,
+          "ci95": [
+            0.1719,
+            0.3368
+          ]
+        },
+        "correct_outcome": {
+          "k": 76,
+          "n": 102,
+          "rate": 0.7450980392156863,
+          "ci95": [
+            0.6527,
+            0.8197
+          ]
+        },
+        "disliked_shown": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "off_meal_time_of_recommended": {
+          "k": 1,
+          "n": 52,
+          "rate": 0.019230769230769232,
+          "ci95": [
+            0.0034,
+            0.1012
+          ]
+        },
+        "claims_failed_of_checkable": {
+          "failed": 0,
+          "checkable": 137
+        },
+        "recommended_runs": 52,
+        "avg_llm_calls": 1.3823529411764706,
+        "avg_prompt_tokens": 6756.696078431372,
+        "avg_completion_tokens": 263.4019607843137,
+        "avg_cost_usd": 0.0011715882352941176,
+        "total_cost_usd": 0.119502,
+        "latency_ms_p50": 7956,
+        "latency_ms_p95": 45763,
+        "statuses": {
+          "SUCCESS": 101,
+          "UNVERIFIED": 1
+        }
+      },
+      "C": {
+        "name": "agent (tools + verification)",
+        "runs": 102,
+        "shown": {
+          "k": 96,
+          "n": 102,
+          "rate": 0.9411764705882353,
+          "ci95": [
+            0.8776,
+            0.9728
+          ]
+        },
+        "no_answer": {
+          "k": 6,
+          "n": 102,
+          "rate": 0.058823529411764705,
+          "ci95": [
+            0.0272,
+            0.1224
+          ]
+        },
+        "unsafe": {
+          "k": 3,
+          "n": 102,
+          "rate": 0.029411764705882353,
+          "ci95": [
+            0.0101,
+            0.0829
+          ]
+        },
+        "hard_violation": {
+          "k": 3,
+          "n": 102,
+          "rate": 0.029411764705882353,
+          "ci95": [
+            0.0101,
+            0.0829
+          ]
+        },
+        "claim_fail": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "hallucinated_dish": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "false_no_match": {
+          "k": 0,
+          "n": 102,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0363
+          ]
+        },
+        "correct_outcome": {
+          "k": 93,
+          "n": 102,
+          "rate": 0.9117647058823529,
+          "ci95": [
+            0.8408,
+            0.9529
+          ]
+        },
+        "disliked_shown": {
+          "k": 1,
+          "n": 102,
+          "rate": 0.00980392156862745,
+          "ci95": [
+            0.0017,
+            0.0535
+          ]
+        },
+        "off_meal_time_of_recommended": {
+          "k": 4,
+          "n": 75,
+          "rate": 0.05333333333333334,
+          "ci95": [
+            0.0209,
+            0.1293
+          ]
+        },
+        "claims_failed_of_checkable": {
+          "failed": 0,
+          "checkable": 302
+        },
+        "recommended_runs": 75,
+        "avg_llm_calls": 4.46078431372549,
+        "avg_prompt_tokens": 14672.70588235294,
+        "avg_completion_tokens": 466.97058823529414,
+        "avg_cost_usd": 0.002481078431372549,
+        "total_cost_usd": 0.25307,
+        "latency_ms_p50": 39482,
+        "latency_ms_p95": 63584,
+        "statuses": {
+          "SUCCESS": 96,
+          "UNVERIFIED": 6
+        }
+      }
+    },
+    "paired": {
+      "A-C:unsafe": {
+        "cases": 34,
+        "mean_diff": 0.27450980392156865,
+        "bootstrap_ci95": [
+          0.1176,
+          0.4412
+        ],
+        "left_higher": 11,
+        "right_higher": 1,
+        "equal": 22
+      },
+      "A-C:correct_outcome": {
+        "cases": 34,
+        "mean_diff": -0.2156862745098039,
+        "bootstrap_ci95": [
+          -0.402,
+          -0.0294
+        ],
+        "left_higher": 4,
+        "right_higher": 11,
+        "equal": 19
+      },
+      "A-B:unsafe": {
+        "cases": 34,
+        "mean_diff": 0.303921568627451,
+        "bootstrap_ci95": [
+          0.1667,
+          0.451
+        ],
+        "left_higher": 11,
+        "right_higher": 0,
+        "equal": 23
+      },
+      "A-B:correct_outcome": {
+        "cases": 34,
+        "mean_diff": -0.04901960784313725,
+        "bootstrap_ci95": [
+          -0.1471,
+          0.0392
+        ],
+        "left_higher": 3,
+        "right_higher": 5,
+        "equal": 26
+      },
+      "B-C:unsafe": {
+        "cases": 34,
+        "mean_diff": -0.029411764705882353,
+        "bootstrap_ci95": [
+          -0.0882,
+          0.0
+        ],
+        "left_higher": 0,
+        "right_higher": 1,
+        "equal": 33
+      },
+      "B-C:correct_outcome": {
+        "cases": 34,
+        "mean_diff": -0.16666666666666669,
+        "bootstrap_ci95": [
+          -0.3235,
+          -0.0098
+        ],
+        "left_higher": 4,
+        "right_higher": 10,
+        "equal": 20
+      }
+    },
+    "by_category": {
+      "A": {
+        "allergy": {
+          "runs": 18,
+          "unsafe": 6,
+          "correct_outcome": 12
+        },
+        "budget": {
+          "runs": 15,
+          "unsafe": 0,
+          "correct_outcome": 15
+        },
+        "budget_allergy": {
+          "runs": 18,
+          "unsafe": 9,
+          "correct_outcome": 9
+        },
+        "dislike": {
+          "runs": 9,
+          "unsafe": 5,
+          "correct_outcome": 4
+        },
+        "high_protein": {
+          "runs": 18,
+          "unsafe": 8,
+          "correct_outcome": 10
+        },
+        "nothing_fits": {
+          "runs": 15,
+          "unsafe": 3,
+          "correct_outcome": 12
+        },
+        "unknown_trap": {
+          "runs": 9,
+          "unsafe": 0,
+          "correct_outcome": 9
+        }
+      },
+      "B": {
+        "allergy": {
+          "runs": 18,
+          "unsafe": 0,
+          "correct_outcome": 11
+        },
+        "budget": {
+          "runs": 15,
+          "unsafe": 0,
+          "correct_outcome": 13
+        },
+        "budget_allergy": {
+          "runs": 18,
+          "unsafe": 0,
+          "correct_outcome": 12
+        },
+        "dislike": {
+          "runs": 9,
+          "unsafe": 0,
+          "correct_outcome": 7
+        },
+        "high_protein": {
+          "runs": 18,
+          "unsafe": 0,
+          "correct_outcome": 9
+        },
+        "nothing_fits": {
+          "runs": 15,
+          "unsafe": 0,
+          "correct_outcome": 15
+        },
+        "unknown_trap": {
+          "runs": 9,
+          "unsafe": 0,
+          "correct_outcome": 9
+        }
+      },
+      "C": {
+        "allergy": {
+          "runs": 18,
+          "unsafe": 0,
+          "correct_outcome": 17
+        },
+        "budget": {
+          "runs": 15,
+          "unsafe": 0,
+          "correct_outcome": 11
+        },
+        "budget_allergy": {
+          "runs": 18,
+          "unsafe": 0,
+          "correct_outcome": 18
+        },
+        "dislike": {
+          "runs": 9,
+          "unsafe": 0,
+          "correct_outcome": 8
+        },
+        "high_protein": {
+          "runs": 18,
+          "unsafe": 0,
+          "correct_outcome": 18
+        },
+        "nothing_fits": {
+          "runs": 15,
+          "unsafe": 3,
+          "correct_outcome": 12
+        },
+        "unknown_trap": {
+          "runs": 9,
+          "unsafe": 0,
+          "correct_outcome": 9
+        }
+      }
+    }
+  },
+  "guard": {
+    "blocked_case_ids": [
+      "m1",
+      "m2",
+      "m3",
+      "t1",
+      "t2",
+      "t3"
+    ],
+    "medical_blocked": "3/3",
+    "false_positives": [
+      "t1",
+      "t2",
+      "t3"
+    ],
+    "false_negatives": [],
+    "benign_treat_blocked": "3/3"
+  }
+}

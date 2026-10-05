@@ -19,3 +19,11 @@ server:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+
+# Chat -> ai-service. Off by default; when on, any failure falls back to the rule-based recommender.
+mealmind:
+  agent:
+    enabled: ${MEALMIND_AGENT_ENABLED:false}
+    base-url: ${MEALMIND_AGENT_BASE_URL:http://localhost:8000}
+    connect-timeout-ms: ${MEALMIND_AGENT_CONNECT_TIMEOUT_MS:2000}
+    read-timeout-ms: ${MEALMIND_AGENT_READ_TIMEOUT_MS:35000}

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mealmind.entity.SessionRow;
 import com.mealmind.enums.SessionPhase;
 import com.mealmind.enums.SourceMode;
+import com.mealmind.exception.MealException;
 import com.mealmind.mapper.SessionMapper;
 import com.mealmind.model.SessionState;
 import com.mealmind.model.SlotBundle;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SessionStateServiceTest {
 
@@ -118,5 +120,26 @@ class SessionStateServiceTest {
         SessionState state = sessionStateService.loadOrCreate("sess_garbage", 1L, SourceMode.PUBLIC);
 
         assertThat(state.phase()).isEqualTo(SessionPhase.START);
+    }
+
+    @Test
+    void findReturnsTheStoredSessionAndKeepsItsSourceMode() {
+        SessionState created = sessionStateService.create(7L, SourceMode.PERSONAL);
+
+        SessionState found = sessionStateService.find(created.sessionId(), 7L);
+
+        assertThat(found.sessionId()).isEqualTo(created.sessionId());
+        assertThat(found.sourceMode()).isEqualTo(SourceMode.PERSONAL);
+    }
+
+    @Test
+    void findNeverCreatesAndDoesNotShowOtherUsersSessions() {
+        SessionState created = sessionStateService.create(7L, SourceMode.PUBLIC);
+
+        assertThatThrownBy(() -> sessionStateService.find("sess_missing", 7L))
+                .isInstanceOf(MealException.class).hasMessageContaining("Session not found");
+        assertThatThrownBy(() -> sessionStateService.find(created.sessionId(), 8L))   // right id, wrong user
+                .isInstanceOf(MealException.class);
+        assertThat(sessionMapper.findById("sess_missing", 7L)).isNull();               // and nothing was inserted
     }
 }
