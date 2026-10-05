@@ -24,17 +24,34 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mealmind?serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: mealmind
       SPRING_DATASOURCE_PASSWORD: mealmind
+      # Chat -> ai-service. Off unless you opt in; any ai-service failure falls back to the rule-based recommender.
+      MEALMIND_AGENT_ENABLED: ${MEALMIND_AGENT_ENABLED:-false}
+      MEALMIND_AGENT_BASE_URL: http://ai-service:8000
     depends_on:
       mysql:
         condition: service_healthy
 
   ai-service:
-    build: ./ai-service
+    build:
+      context: ./ai-service
+      additional_contexts:
+        knowledge: ./backend/src/main/resources/knowledge
+    # Published on this machine only: the service has no authentication, and /ping and /v1/recommend spend real
+    # money. The backend reaches it by service name over the compose network, so no host port is needed for that.
     ports:
-      - "8000:8000"
-    # Provides OPENAI_API_KEY / OPENAI_MODEL / LLM_API_URL; the file is not copied into the image.
-    env_file:
-      - ./backend/.env
+      - "127.0.0.1:8000:8000"
+    # Only these three variables enter the container (not the whole backend/.env with the database password).
+    # Run as:  docker compose --env-file backend/.env up --build
+    # A blank key is allowed: the service then answers 503 and the backend falls back to its rules.
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
+      LLM_API_URL: ${LLM_API_URL:-}
+      INTERNAL_API_BASE_URL: http://mealmind-backend:8080
+      # handwritten (default) or langgraph; langgraph is needed for pause-and-ask (allow_questions) and resume.
+      AGENT_ENGINE: ${AGENT_ENGINE:-handwritten}
+    volumes:
+      - ai-checkpoints:/srv/data
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 10s
@@ -56,3 +73,4 @@ services:
 
 volumes:
   mealmind-mysql-data:
+  ai-checkpoints:

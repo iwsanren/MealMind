@@ -44,12 +44,29 @@ A personal meal-decision assistant: tell it your situation, it narrows a meal li
 git clone <repo-url>
 cd MealMind
 
-# 2. Copy the backend env file and fill in DB credentials
+# 2. Copy the backend env file and fill in DB credentials, plus OPENAI_API_KEY / OPENAI_MODEL
+#    (and LLM_API_URL) if you want the AI agent
 cp backend/.env.example backend/.env
-# OPENAI_API_KEY / OPENAI_MODEL are reserved for Part 2 — no code reads them yet
 
-# 3. Start MySQL, backend, and frontend together
-docker compose up
+# 3. Start MySQL, backend, ai-service and frontend together.
+#    --env-file lets compose pass ONLY the three LLM variables to the ai-service container.
+docker compose --env-file backend/.env up --build
+```
+
+The chat uses simple rule-based matching by default. To let the AI agent answer (any agent failure still falls back to the rules):
+
+```bash
+MEALMIND_AGENT_ENABLED=true docker compose --env-file backend/.env up --build        # bash
+$env:MEALMIND_AGENT_ENABLED='true'; docker compose --env-file backend/.env up --build   # PowerShell
+```
+
+Each chat answer says who produced it (`AI agent · trace ...` or `Rule-based answer`). Try the endpoint directly:
+
+```bash
+SID=$(curl -s -X POST "http://localhost:8080/api/v1/sessions?sourceMode=PUBLIC" | python -c "import sys,json;print(json.load(sys.stdin)['sessionId'])")
+curl -s -X POST "http://localhost:8080/api/v1/sessions/$SID/recommend" -H "Content-Type: application/json" \
+  -d '{"message":"high protein dinner under $15, allergic to shellfish"}'
+# add ?mode=rules to force the rule-based path for one request
 ```
 
 That's it — Flyway applies the database schema automatically on backend startup, no manual migration step needed.
@@ -61,6 +78,7 @@ That's it — Flyway applies the database schema automatically on backend startu
 | Frontend | http://localhost:5173 |
 | Backend API | http://localhost:8080/api/v1/ |
 | MySQL | localhost:3307 (mapped from the container's 3306) |
+| AI service | http://127.0.0.1:8000 (this machine only; no authentication, spends real API credit) |
 
 The frontend container runs the Vite dev server with the source directory mounted in, so code changes hot-reload without rebuilding the image.
 
