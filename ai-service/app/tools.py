@@ -160,7 +160,7 @@ class AgentTools:
                                  "description": f"Soft preference tags for {dim}; omit if the user did not mention any."}
         search_props["max_price"] = {
             "type": "number", "minimum": 0,
-            "description": "HARD budget cap in USD (inclusive). Set it whenever the user states a budget."}
+            "description": "HARD budget cap in EUR (inclusive). Set it whenever the user states a budget."}
         search_props["exclude_allergens"] = {
             "type": "array", "items": {"type": "string", "enum": ALLERGEN_TOKENS},
             "description": "HARD constraint: allergens the meal must not contain. Set it whenever the user says they "

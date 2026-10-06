@@ -45,7 +45,7 @@
     </label>
 
     <label>
-        Price
+        Price (EUR)
         <input id="price" type="number" placeholder="e.g. 22">
     </label>
 
@@ -73,7 +73,7 @@
             item.textContent =
                 "#" + meal.id +
                 " " + meal.name +
-                " | $" + meal.price +
+                " | €" + meal.price +
                 " | " + (meal.tags || []).join(", ");
             list.appendChild(item);
         });

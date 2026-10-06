@@ -30,6 +30,18 @@ class HardConstraintExtractorTest {
             "15 bucks max|15",
             "budget is 9|9",
             "less than $10 and under $7|7",
+            // euros: symbol before or after the number, a word, a cue word, and a decimal comma
+            "dinner under €15, please|15",
+            "Under € 15.|15",
+            "I only have €8.50|8.50",
+            "I only have 8,50 €|8.50",
+            "under 12,50|12.50",
+            "something for 8€|8",
+            "15 euros max|15",
+            "at most 20 euro|20",
+            "10 eur|10",
+            "budget of EUR 9|9",
+            "less than €10 and under 7 euros|7",
     })
     void readsABudget(String message, String expected) {
         assertThat(extractor.extract(message).maxPrice()).isEqualByComparingTo(new BigDecimal(expected));
@@ -37,7 +49,9 @@ class HardConstraintExtractorTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"ready in under 30 minutes", "under 500 calories", "over 30g protein", "something tasty",
-            "under 20 min please", "less than 600 kcal"})
+            "under 20 min please", "less than 600 kcal",
+            // a thousands separator is not a decimal comma
+            "under 1,200 calories", "under 1,200"})
     void aNumberWithoutMoneyIsNotABudget(String message) {
         assertThat(extractor.extract(message).maxPrice()).isNull();
     }

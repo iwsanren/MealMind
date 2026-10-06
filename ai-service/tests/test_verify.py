@@ -147,6 +147,15 @@ def test_recommendation_schema_rejects_inconsistent_drafts():
     ("About 800 kcal.", ["REASON_NUMBER_UNSUPPORTED"]),
     ("A tasty dinner you will enjoy.", []),                                   # no figures, nothing to check
     ("Has 20 g of fat.", ["REASON_NUMBER_UNSUPPORTED"]),                      # no fat data exists, so any grams figure must be protein
+    # Euro writings: marker before or after the number, decimal point or comma, symbol or word.
+    ("Costs €12.50 and has 38 g of protein.", []),
+    ("Costs 12,50 € and has 38 g of protein.", []),
+    ("Costs 12.50 euros, under your 15 euro budget.", []),                    # 15 is the user's budget
+    ("Costs 12,5 EUR.", []),
+    ("Only €9 tonight.", ["REASON_NUMBER_UNSUPPORTED"]),                      # the meal costs 12.5
+    ("Only 9,50 € tonight.", ["REASON_NUMBER_UNSUPPORTED"]),
+    ("Only 9 euros tonight.", ["REASON_NUMBER_UNSUPPORTED"]),
+    ("Has 520 calories in 2 courses.", []),                                   # a bare number is not a price
 ])
 def test_numbers_written_in_the_reason_must_match_the_data(reason, expected):
     issues = check_reason_numbers(reason, meal(), Constraints(max_price=15))

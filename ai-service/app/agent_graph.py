@@ -83,7 +83,7 @@ def budget_question(state: AgentState) -> dict[str, Any]:
     avoiding = f" and avoids {', '.join(allergens)}" if allergens else ""
     return {"type": "relax_budget", "current_max_price": budget, "excluded_allergens": list(allergens),
             "allergens_can_be_relaxed": False,
-            "message": f"No meal in the library costs at most ${budget:g}{avoiding}. Do you want to raise the budget? "
+            "message": f"No meal in the library costs at most €{budget:g}{avoiding}. Do you want to raise the budget? "
                        "Allergen limits stay as they are.",
             "answer_with": {"decision": "raise_budget | decline", "max_price": "number, required for raise_budget", "note": "optional text"}}
 
@@ -235,7 +235,7 @@ def build_agent_graph(client: Any, tools: AgentTools, definitions: list[dict[str
             context["max_price"] = float(new_budget)
             context["empty_hard_searches"] = []
             allergens = ", ".join(question["excluded_allergens"]) or "none"
-            message = (f"The user agreed to raise the budget to ${new_budget:g}. Search again with max_price={new_budget:g}. "
+            message = (f"The user agreed to raise the budget to €{new_budget:g}. Search again with max_price={new_budget:g}. "
                        f"The allergen limits ({allergens}) have NOT changed and must stay."
                        + (f" The user added: {note}" if note else ""))
         else:

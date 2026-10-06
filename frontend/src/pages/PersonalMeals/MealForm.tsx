@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Button } from '../../components/Button'
+import { MEAL_CURRENCY_CODE } from '../../lib/formatMoney'
 import { DimensionChipGroup } from '../../components/DimensionChipGroup'
 import {
   ALLERGENS,
@@ -117,7 +118,7 @@ export function MealForm({ slotOptions, initialMeal, onSubmit, onCancel }: MealF
 
       <div className="grid grid-cols-3 gap-3">
         <label className="flex flex-col gap-1">
-          <span className="text-[13px] font-medium text-text-secondary">Price (USD)</span>
+          <span className="text-[13px] font-medium text-text-secondary">Price ({MEAL_CURRENCY_CODE})</span>
           <input type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} className={INPUT_CLASS} />
         </label>
         <label className="flex flex-col gap-1">

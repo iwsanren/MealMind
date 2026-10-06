@@ -12,7 +12,7 @@ import java.util.Locale;
  *   this meal. An empty list means "known to contain none".
  */
 public record MealFacts(
-        BigDecimal price,       // USD
+        BigDecimal price,       // EUR
         BigDecimal proteinG,    // grams
         Integer calories,       // kcal
         List<String> allergens  // Allergen tokens; null = unknown, empty = none

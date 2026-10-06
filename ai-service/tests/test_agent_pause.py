@@ -95,7 +95,7 @@ def test_raising_the_budget_in_a_new_process_continues_from_the_pause_and_finish
     assert resume_event["decision"] == "raise_budget" and resume_event["max_price"] == 20
     # the model was told, in plain words, what changed and what did not
     told = llm.calls[0]["messages"][-1]
-    assert told["role"] == "user" and "$20" in told["content"] and "shellfish" in told["content"] and "NOT changed" in told["content"]
+    assert told["role"] == "user" and "€20" in told["content"] and "shellfish" in told["content"] and "NOT changed" in told["content"]
     # the budget the verifier enforces is now the user's new one; the allergen limit is unchanged
     assert tools.context.max_price == 20 and tools.context.exclude_allergens == {"shellfish"}
     assert second.usage.llm_calls == 3          # usage carried across the pause

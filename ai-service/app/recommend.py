@@ -148,7 +148,7 @@ async def resume_recommendation(thread_id: str, request: ResumeRequest, *, clien
     if request.decision == "raise_budget":
         current = saved["tool_context"]["empty_hard_searches"][-1][0]
         if request.max_price is not None and current is not None and request.max_price <= current:
-            raise ValueError(f"max_price must be higher than the current budget (${current:g})")
+            raise ValueError(f"max_price must be higher than the current budget (€{current:g})")
     tools = AgentTools(backend, nutrition, RunContext(user_id=request.user_id))   # filled from the saved state
     decision = {"decision": request.decision, "max_price": request.max_price, "note": request.note}
     try:

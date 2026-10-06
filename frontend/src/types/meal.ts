@@ -48,7 +48,7 @@ export interface MealResponse {
   cuisine: string[]
   taste: string[]
   convenience: string[]
-  /** USD per serving; null = unknown */
+  /** EUR per serving; null = unknown */
   price: number | null
   /** grams per serving; null = unknown */
   proteinG: number | null

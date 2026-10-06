@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Chip } from './Chip'
+import { formatMoney } from '../lib/formatMoney'
 import { DIMENSION_LABELS, SLOT_DIMENSIONS, type MealResponse } from '../types/meal'
 
 interface MealCardProps {
@@ -19,7 +20,7 @@ export function MealCard({ meal, actions, className = '' }: MealCardProps) {
       </div>
 
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-text-secondary">
-        <span>{meal.price != null ? `$${meal.price.toFixed(2)}` : 'Price unknown'}</span>
+        <span>{formatMoney(meal.price)}</span>
         {meal.proteinG != null && <span>{meal.proteinG} g protein</span>}
         {meal.calories != null && <span>{meal.calories} kcal</span>}
         <span>

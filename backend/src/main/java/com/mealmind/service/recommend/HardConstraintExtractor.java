@@ -43,14 +43,18 @@ public class HardConstraintExtractor {
                     + "|do not (?:eat|want)|not eat|avoid|without|except|never|-free|\\bfree\\b|\\bno\\b");
     private static final Pattern ALLERGY_WORD = Pattern.compile("allerg|intoleran");
 
-    // "under $15", "below 12", "at most 20 dollars", "$12", "15 bucks"; a number followed by a unit that is not money
-    // ("under 30 minutes", "under 500 cal") is not a budget.
-    private static final String NOT_A_UNIT = "(?!\\d)(?!\\.\\d)(?!\\s*(?:min|hour|hr|cal|kcal|kg|g\\b|gram|mg|%|oz|lb))";
+    // "under €15", "below 12", "at most 20 euros", "€12", "15 eur", "12,50 €"; a number followed by a unit that is not
+    // money ("under 30 minutes", "under 500 cal") is not a budget. "$" / dollars / usd are still accepted, so an
+    // American-style message keeps working. The decimal separator may be "." or "," (12.50 / 12,50); a comma followed
+    // by a third digit ("1,200") is a thousands separator and never a price. No \b after "€": it is not a word
+    // character, so there is no word boundary between "€" and a space.
+    private static final String MONEY_NUMBER = "(\\d+(?:[.,]\\d{1,2})?)";
+    private static final String NOT_A_UNIT = "(?!\\d)(?![.,]\\d)(?!\\s*(?:min|hour|hr|cal|kcal|kg|g\\b|gram|mg|%|oz|lb))";
     private static final Pattern BUDGET = Pattern.compile(
             "(?:under|below|less than|cheaper than|within|up to|at most|no more than|max(?:imum)?(?: of)?"
-                    + "|budget(?: of| is)?|<=?)\\s*(?:usd\\s*|us\\s*)?\\$?\\s*(\\d+(?:\\.\\d{1,2})?)" + NOT_A_UNIT
-                    + "|\\$\\s*(\\d+(?:\\.\\d{1,2})?)" + NOT_A_UNIT
-                    + "|(\\d+(?:\\.\\d{1,2})?)\\s*(?:dollars?|bucks|usd)\\b");
+                    + "|budget(?: of| is)?|<=?)\\s*(?:(?:usd|eur|us)\\s*)?[€$]?\\s*" + MONEY_NUMBER + NOT_A_UNIT
+                    + "|[€$]\\s*" + MONEY_NUMBER + NOT_A_UNIT
+                    + "|" + MONEY_NUMBER + "\\s*(?:(?:euros?|eur|dollars?|bucks|usd)\\b|€)");
 
     public record HardConstraints(BigDecimal maxPrice, Set<String> excludeAllergens, boolean unresolvedAllergy) {
         public boolean any() {
@@ -68,7 +72,7 @@ public class HardConstraintExtractor {
         Matcher m = BUDGET.matcher(text);
         while (m.find()) {
             String number = m.group(1) != null ? m.group(1) : m.group(2) != null ? m.group(2) : m.group(3);
-            BigDecimal value = new BigDecimal(number);
+            BigDecimal value = new BigDecimal(number.replace(',', '.'));
             if (lowest == null || value.compareTo(lowest) < 0) {
                 lowest = value;
             }

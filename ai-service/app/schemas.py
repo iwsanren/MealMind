@@ -24,8 +24,8 @@ class ClaimSource(str, Enum):
 class ClaimField(str, Enum):
     """What kind of checkable fact a claim asserts. OTHER means nothing a program can check."""
 
-    PRICE = "PRICE"                  # number = the price in USD
-    WITHIN_BUDGET = "WITHIN_BUDGET"  # number = the user's budget in USD
+    PRICE = "PRICE"                  # number = the price in EUR
+    WITHIN_BUDGET = "WITHIN_BUDGET"  # number = the user's budget in EUR
     PROTEIN_G = "PROTEIN_G"          # number = grams of protein
     HIGH_PROTEIN = "HIGH_PROTEIN"    # asserts the meal counts as high protein; no value
     CALORIES = "CALORIES"            # number = kcal

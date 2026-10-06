@@ -130,7 +130,12 @@ def _check_candidate_claim(index: int, claim, meal: Meal) -> list[Issue]:
 
 # Numbers with a unit inside the free-text reason. The structured claims are the main check, but a model can state a
 # fact in "reason" and leave it out of "claims"; any number it writes must at least match the data it was given.
-_PRICE_IN_TEXT = re.compile(r"\$\s?(\d+(?:\.\d{1,2})?)")
+# A price has a currency marker before ("€12.50", "$12.50") or after ("12,50 €", "12 euros"), and may use a decimal comma.
+# The check compares numbers only, so "$" stays accepted: a model that writes the wrong symbol is still held to the data.
+_PRICE_IN_TEXT = re.compile(
+    r"[€$]\s?(\d+(?:[.,]\d{1,2})?)"
+    r"|(\d+(?:[.,]\d{1,2})?)\s?(?:€|euros?\b|eur\b)",
+    re.IGNORECASE)
 _GRAMS_IN_TEXT = re.compile(r"(\d+(?:\.\d+)?)\s?-?\s?(?:g|grams?)\b", re.IGNORECASE)
 _KCAL_IN_TEXT = re.compile(r"(\d+(?:\.\d+)?)\s?(?:kcal|calories|cal)\b", re.IGNORECASE)
 
@@ -145,7 +150,8 @@ def check_reason_numbers(reason: str, meal: Meal, constraints: Constraints) -> l
     issues: list[Issue] = []
     for kind, pattern in (("price", _PRICE_IN_TEXT), ("grams", _GRAMS_IN_TEXT), ("kcal", _KCAL_IN_TEXT)):
         for match in pattern.finditer(reason):
-            number = float(match.group(1))
+            # The price pattern has two alternatives (marker first / number first), so take whichever group matched.
+            number = float(next(g for g in match.groups() if g).replace(",", "."))
             if not any(abs(number - known) <= _TOLERANCE for known in supported[kind]):
                 issues.append(Issue("REASON_NUMBER_UNSUPPORTED", Severity.FAIL,
                                     f"the reason states '{match.group(0).strip()}', which matches no value in the data for '{meal.name}'"))

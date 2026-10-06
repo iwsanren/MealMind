@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { getEvaluationCase, getEvaluationCases } from '../../api/evaluations'
 import { EmptyState } from '../../components/EmptyState'
 import type { ArmResult, CaseConstraints, CaseDetail, CasePage, CaseRepeat } from '../../types/evaluation'
+import { formatMoney } from '../../lib/formatMoney'
 import { armColor } from './format'
 
 function constraintChips(c: CaseConstraints | null, feasible: boolean | null): string[] {
   const chips: string[] = []
   if (c) {
-    if (c.maxPrice !== null) chips.push(`budget ≤ $${c.maxPrice}`)
+    if (c.maxPrice !== null) chips.push(`budget ≤ ${formatMoney(c.maxPrice)}`)
     c.excludeAllergens.forEach((a) => chips.push(`no ${a}`))
     if (c.requiresHighProtein) chips.push('high protein')
     if (c.minProteinG !== null) chips.push(`≥ ${c.minProteinG} g protein`)

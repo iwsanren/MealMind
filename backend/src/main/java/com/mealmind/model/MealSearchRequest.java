@@ -22,7 +22,7 @@ public record MealSearchRequest(
         Long userId,                   // required when sourceMode == PERSONAL
         SlotBundle slots,              // normalized tags fed to JSON_OVERLAPS
         List<Long> excludeMealIds,     // previous picks; filtered by the Rank layer, NOT here
-        BigDecimal maxPrice,           // optional hard budget cap (USD, inclusive)
+        BigDecimal maxPrice,           // optional hard budget cap (EUR, inclusive)
         List<String> excludeAllergens  // optional Allergen tokens the meal must not contain
 ) {
 }
