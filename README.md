@@ -17,8 +17,9 @@ A personal meal-decision assistant: tell it your situation, it narrows a meal li
 - ✅ Rule-based slot merging, clarify-need detection, and health-risk keyword guarding — pure logic, unit-tested, no LLM required
 - ✅ Multi-turn session state (phase, accumulated slots, last recommendations), persisted per user
 - ✅ Like/Dislike feedback capture on any recommended meal
-- ✅ Request trace storage with manual labeling, for future evaluation tooling
-- ✅ Full React frontend: meal browsing + filtering, personal meal CRUD, a trace admin console, and a chat page (currently backed by a client-side keyword matcher standing in for the real agent)
+- ✅ Request trace storage with manual labeling; every agent run is stored as a trace
+- ✅ Tool-calling recommendation agent (ai-service) behind a feature flag, with a rule-based fallback and an offline evaluation harness; results are browsable on the Evaluations page
+- ✅ Full React frontend: meal browsing + filtering, personal meal CRUD, a trace admin console, an Evaluations page, and a chat page backed by `POST /api/v1/sessions/{id}/recommend` (AI agent when enabled, rule-based otherwise)
 - ✅ Flyway-managed schema — data persists across backend restarts
 
 ## Tech Stack
@@ -228,7 +229,7 @@ See `backend/.env.example` for the full list.
                                                    └────────────┘
 ```
 
-**Current data flow:** the frontend calls the REST API directly; there is no queue, worker, or LLM in the loop yet. The Chat page's "recommendation" step runs entirely client-side (keyword matching against already-fetched meals) as a placeholder.
+**Current data flow:** the frontend calls the REST API directly. The chat's recommend step runs in the backend: with `MEALMIND_AGENT_ENABLED=true` it calls the ai-service agent (timeouts, a safety gate, and a re-check of the agent's meal; any failure falls back to the rule-based recommender). The Evaluations page reads the offline evaluation output (`evaluation/results/`) through a read-only API.
 
 **Part 2 (planned):** an Orchestrator service will sit behind a new chat endpoint, routing each turn through an IntentAgent → ClarifyAgent → RecommendResponseAgent pipeline (backed by an LLM), reusing the rule services (slot merge, clarify-need check, risk guard) that already exist.
 
@@ -254,10 +255,10 @@ MealMind/
 │       ├── pages/             # Home, Chat, PersonalMeals, PublicMeals, Trace, Evaluations
 │       ├── components/        # Shared UI: Button, Chip, MealCard, FeedbackButtons, DimensionChipGroup, ...
 │       ├── api/                # Typed API client functions
-│       ├── lib/                # Client-side utilities (session handling, mock chat reply, filters)
+│       ├── lib/                # Client-side utilities (session handling, filters)
 │       └── types/              # Shared TypeScript types
-├── ai-service/    # Reserved for Part 2 agent/prompt tooling (empty for now)
-├── evaluation/    # Reserved for golden-case evaluation scripts (empty for now)
+├── ai-service/    # Python agent service: tools, verifier, hand-written and LangGraph loops, prompts
+├── evaluation/    # Synthetic golden set, evaluation harness (run_eval.py) and its results
 ├── docs/          # Screenshots
 └── docker-compose.yml
 ```
@@ -272,6 +273,6 @@ Part 1 (this repo's current state) is meal management, rule-based logic, and a f
 | **Clarifying questions** | Rule engine decides when info is missing; canned phrasing | ClarifyAgent generates a natural-language follow-up |
 | **Recommendation reasoning** | Mock picks a few tag-matching meals with canned text | RecommendResponseAgent produces a reason and reply per recommendation |
 | **Multi-turn orchestration** | Not implemented | Orchestrator state machine wiring intent → clarify → recommend, reusing the existing rule services |
-| **Evaluation reports** | Route reserved, page shows a placeholder | EvaluationJudge scoring + report generation over labeled traces |
-| **Automatic tracing** | Table + manual label API only; nothing writes a row automatically yet | Trace events captured automatically for every agent turn |
+| **Evaluation reports** | Evaluations page shows offline golden-set runs (read-only, synthetic data) | Scoring of labeled real traces through the same page and API shape |
+| **Automatic tracing** | Every agent run is stored as a trace; the rule-based path writes none | Trace events for every turn, including the rule-based path |
 | **Authentication** | `X-User-Id` header, no real login | Not yet designed — not required to build Part 2 |

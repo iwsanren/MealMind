@@ -27,6 +27,12 @@ services:
       # Chat -> ai-service. Off unless you opt in; any ai-service failure falls back to the rule-based recommender.
       MEALMIND_AGENT_ENABLED: ${MEALMIND_AGENT_ENABLED:-false}
       MEALMIND_AGENT_BASE_URL: http://ai-service:8000
+      # The Evaluations page reads these files (read-only). A missing folder just means "no runs".
+      MEALMIND_EVALUATION_RESULTS_DIR: /data/evaluation/results
+      MEALMIND_EVALUATION_CASES_FILE: /data/evaluation/cases.json
+    volumes:
+      - ./evaluation/results:/data/evaluation/results:ro
+      - ./evaluation/cases.json:/data/evaluation/cases.json:ro
     depends_on:
       mysql:
         condition: service_healthy

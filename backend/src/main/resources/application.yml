@@ -20,8 +20,13 @@ server:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 
-# Chat -> ai-service. Off by default; when on, any failure falls back to the rule-based recommender.
 mealmind:
+  # Offline evaluation output shown on the Evaluations page (read-only). Paths are relative to where the backend starts
+  # (backend/); a missing folder just means "no runs".
+  evaluation:
+    results-dir: ${MEALMIND_EVALUATION_RESULTS_DIR:../evaluation/results}
+    cases-file: ${MEALMIND_EVALUATION_CASES_FILE:../evaluation/cases.json}
+  # Chat -> ai-service. Off by default; when on, any failure falls back to the rule-based recommender.
   agent:
     enabled: ${MEALMIND_AGENT_ENABLED:false}
     base-url: ${MEALMIND_AGENT_BASE_URL:http://localhost:8000}
