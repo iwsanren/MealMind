@@ -11,3 +11,7 @@ target/
 **/.env
 
 notes/
+
+# Claude Code project memory (personal, not committed)
+CLAUDE.md
+CLAUDE.local.md
